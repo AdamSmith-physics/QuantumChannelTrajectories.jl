@@ -1,0 +1,24 @@
+name = "QuantumChannelTrajectories"
+uuid = "f888caf8-f0a9-4cba-a88e-65caaceb492b"
+authors = ["Adam Gammon-Smith <adam.smith.home@ntlworld.com>"]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+ExponentialAction = "e24c0720-ea99-47e8-929e-571b494574d3"
+ExponentialUtilities = "d4d017d3-3776-5f7e-afef-a10c40355c18"
+HDF5 = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
+SparseArrayKit = "a9a3c162-d163-4c15-8926-b8794fbefed2"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
+[compat]
+BenchmarkTools = "1.6.0"
+ExponentialAction = "0.2.10"
+ExponentialUtilities = "1.27.0"
+HDF5 = "0.17.2"
+LinearAlgebra = "1.11.0"
+Revise = "3.8.1"
+SparseArrayKit = "0.4.1"
+SparseArrays = "1.11.0"
