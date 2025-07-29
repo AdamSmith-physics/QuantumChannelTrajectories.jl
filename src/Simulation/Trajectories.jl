@@ -27,6 +27,14 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ::Vector, num_iterations::In
 
         n_list[1, :] = [n_expectation(ψ, n, N) for n in 1:N]
         currents_list[1, :] = [current_expectation(ψ, B, bond, N) for bond in bonds]
+
+        for step in 1:steps
+
+            ψ, info = exponentiate(hamiltonian, -im*dt, ψ; tol=1e-15, ishermitian=true, eager=true) 
+
+            # Kraus operator for inflow
+            K_in = pick_kraus(p, ψ, site_in, N)
+            apply_kraus!(ψ, K_in, site_in, N; type=:inflow, drive_type=drive_type)
         
 
 
