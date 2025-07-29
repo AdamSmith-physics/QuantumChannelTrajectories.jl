@@ -1,5 +1,6 @@
 
 export create_hamiltonian
+export get_bonds
 
 # BLAS.set_num_threads(1) 
 
@@ -8,7 +9,7 @@ export create_hamiltonian
 
     Creates a Hamiltonian for a 2D system with dimensions Nx and Ny.
 """
-function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool = false)::SparseMatrixCSC{Complex{Float64}, Int}
+function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool = false)
 
     N::Int = Nx * Ny
 
