@@ -2,8 +2,9 @@ using Revise
 using BenchmarkTools
 using LinearAlgebra
 using SparseArrays
-# using ExponentialAction
+using ExponentialAction
 using ExponentialUtilities
+using KrylovKit
 
 using QuantumChannelTrajectories
 
@@ -38,5 +39,12 @@ test = create_hamiltonian(2, 2)
 # List containing Z, 10 times
 Z_list = fill(Z, 25)
 M = kron(Z_list...)
+M += kron(fill(X, 25)...)
+M += kron(fill(Y, 25)...)
 
-@time expv(im*0.1, M, arr, tol=1e-12)
+BLAS.set_num_threads(1)
+
+
+@benchmark ExponentialAction.expv(im*1.01, $M, $arr, tol=1e-15)
+@benchmark ExponentialUtilities.expv(im*1.01, $M, $arr, tol=1e-15)
+@benchmark KrylovKit.exponentiate($M, im*1.01, $arr; tol=1e-15)
