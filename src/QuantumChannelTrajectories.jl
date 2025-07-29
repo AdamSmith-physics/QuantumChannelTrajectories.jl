@@ -4,6 +4,9 @@ using LinearAlgebra
 using SparseArrays
 using KrylovKit
 
+
+include("PauliOperators.jl")
+
 include("Setup/Hamiltonian.jl")
 include("Setup/InitialState.jl")
 
