@@ -8,6 +8,7 @@ export create_hamiltonian
 PauliX = sparse([0.0 1.0; 1.0 0.0])
 PauliY = sparse([0.0 -im; im 0.0])
 PauliZ = sparse([1.0 0.0; 0.0 -1.0])
+density_operator = sparse([0.0 0.0; 0.0 1.0])
 PauliOperators = [PauliX, PauliY, PauliZ]
 
 
@@ -47,9 +48,9 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
     # GC.gc()
 
     fill_operator = fermions ? PauliZ : sparse(I, 2, 2)
-    local_operator = -kron(PauliX, fill(fill_operator,Nx-1)... ,PauliX) 
-    local_operator -= kron(PauliY, fill(fill_operator,Nx-1)..., PauliY) 
-    local_operator += V*kron(PauliZ, sparse(I,2^(Nx-1),2^(Nx-1)), PauliZ)
+    local_operator = -kron(PauliX, fill(fill_operator,Nx-1)... ,PauliX) / 2
+    local_operator -= kron(PauliY, fill(fill_operator,Nx-1)..., PauliY) / 2
+    local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
     for ny in 1:Ny-1
         # Construct vertical operators
         col_operator = spzeros(Complex{Float64}, 2^(2*Nx), 2^(2*Nx))

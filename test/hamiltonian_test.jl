@@ -7,8 +7,8 @@ using QuantumChannelTrajectories
 
 
 
-@time hamiltonian = create_hamiltonian(5, 5; fermions=true)
-GC.gc()
+hamiltonian = create_hamiltonian(5, 5; fermions=true); GC.gc();
+# GC.gc()
 # hamiltonian
 # hamiltonian = nothing
 
