@@ -58,7 +58,11 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
 end
 
 
-function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, fermions::Bool, parameters::SimulationParameters)
+function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, fermions::Bool, parameters::SimulationParameters; eager_saving::Bool = false, filename::String = "")
+
+    if eager_saving && filename == ""
+        error("Filename must be provided for eager saving.")
+    end
 
     steps = parameters.steps
     Nx = parameters.Nx
@@ -77,22 +81,40 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
 
         K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
 
-        K_list_accumulated += K_list
-        n_list_accumulated += n_list
-        currents_list_accumulated += currents_list
-        density_correlations_accumulated += density_correlations
+        K_list_accumulated .+= K_list
+        n_list_accumulated .+= n_list
+        currents_list_accumulated .+= currents_list
+        density_correlations_accumulated .+= density_correlations
+
+        if eager_saving
+            data = Dict(
+                :K_avg => K_list_accumulated,
+                :n_avg => n_list_accumulated,
+                :avg_currents => currents_list_accumulated,
+                :avg_dd_correlations => density_correlations_accumulated,
+                :t_list => get_t_list(parameters),
+                :params => to_dict(parameters),
+                :completed_trajectories => run
+            )
+            save_to_hdf5(data, filename)
+        end
 
         next!(prog; showvalues = [("Completed trajectories", "$run / $num_iterations")])
-
+        
     end
 
+    if eager_saving
+        return nothing
+    end
+    
     data = Dict(
-        :K_avg => K_list_accumulated ./ num_iterations,
-        :n_avg => n_list_accumulated ./ num_iterations,
-        :avg_currents => currents_list_accumulated ./ num_iterations,
-        :avg_dd_correlations => density_correlations_accumulated ./ num_iterations,
+        :K_avg => K_list_accumulated,
+        :n_avg => n_list_accumulated,
+        :avg_currents => currents_list_accumulated,
+        :avg_dd_correlations => density_correlations_accumulated,
         :t_list => get_t_list(parameters),
-        :params => to_dict(parameters)
+        :params => to_dict(parameters),
+        :completed_trajectories => num_iterations
     )
 
     return data

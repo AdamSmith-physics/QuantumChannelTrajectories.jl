@@ -45,7 +45,6 @@ function checkerboard_state(Nx::Int, Ny::Int)
     for ny in 1:Ny
         for nx in 1:Nx
             if (nx + ny) % 2 == 1
-                println("Setting occupation at $(nx), $(ny)")
                 occupation_list[nx + (ny-1)*Nx] = 1
             end
         end

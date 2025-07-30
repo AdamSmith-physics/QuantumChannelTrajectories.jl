@@ -36,10 +36,11 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
     end
 
-    row_operator = spzeros(Complex{Float64}, 1, 1)
-    # GC.gc()
+    row_operator = nothing
 
+    # This does not contain magnetic field yet!
     fill_operator = fermions ? PauliZ : sparse(I, 2, 2)
+    print("Filling operator: $fill_operator\n")
     local_operator = -kron(PauliX, fill(fill_operator,Nx-1)... ,PauliX) / 2
     local_operator -= kron(PauliY, fill(fill_operator,Nx-1)..., PauliY) / 2
     local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
@@ -63,11 +64,8 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
     end
 
-    col_operator = spzeros(Complex{Float64}, 1, 1)
-    # GC.gc()
-
-    local_operator = spzeros(Complex{Float64}, 1, 1)
-    # GC.gc()
+    col_operator = nothing
+    local_operator = nothing
 
     return hamiltonian
 
