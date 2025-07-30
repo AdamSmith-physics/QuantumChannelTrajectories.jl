@@ -15,7 +15,7 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
     hamiltonian = spzeros(Complex{Float64}, 2^N, 2^N)
 
-    local_operator = -kron(PauliX,PauliX) - kron(PauliY,PauliY) + V*kron(PauliZ,PauliZ)
+    local_operator = -kron(PauliX,PauliX)/2 - kron(PauliY,PauliY)/2 + V*kron(density_operator,density_operator)
     for ny in 1:Ny
         # Construct horizontal operators first
         row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)

@@ -4,6 +4,7 @@ export checkerboard_state
 export empty_state
 export filled_state
 export random_state
+export generate_initial_state
 
 """
     product_state(occupation_list::Vector{Int})
@@ -41,9 +42,10 @@ function checkerboard_state(Nx::Int, Ny::Int)
     occupation_list = zeros(Int, Nx * Ny)
 
     # Fill the occupation list with a checkerboard pattern
-    for nx in 1:Nx
-        for ny in 1:Ny
-            if (i + j) % 2 == 0
+    for ny in 1:Ny
+        for nx in 1:Nx
+            if (nx + ny) % 2 == 1
+                println("Setting occupation at $(nx), $(ny)")
                 occupation_list[nx + (ny-1)*Nx] = 1
             end
         end
@@ -74,4 +76,19 @@ function random_state(Nx::Int, Ny::Int; even_parity::Bool = false)
     end
 
     return product_state(occupation_list, Nx, Ny)
+end
+
+
+function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random, even_parity::Bool = false)
+    if initial_state == :checkerboard
+        return checkerboard_state(Nx, Ny)
+    elseif initial_state == :empty
+        return empty_state(Nx, Ny)
+    elseif initial_state == :filled
+        return filled_state(Nx, Ny)
+    elseif initial_state == :random
+        return random_state(Nx, Ny, even_parity=even_parity)
+    else
+        throw(ArgumentError("Unknown initial state: $initial_state"))
+    end
 end

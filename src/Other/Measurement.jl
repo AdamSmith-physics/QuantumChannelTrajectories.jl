@@ -14,9 +14,9 @@ function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tup
     N = Nx * Ny
     
     n1, n2 = bond
-    (x1, y1) = ((n1-1) % Nx + 1, n1 ÷ Nx + 1)
-    (x2, y2) = ((n2-1) % Nx + 1, n2 ÷ Nx + 1)
-    
+    (x1, y1) = ((n1-1) % Nx + 1, (n1-1) ÷ Nx + 1)
+    (x2, y2) = ((n2-1) % Nx + 1, (n2-1) ÷ Nx + 1)
+
     res = 0.0
 
     if x1 == x2  # Vertical bond
