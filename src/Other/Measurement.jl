@@ -8,7 +8,7 @@ function n_expectation(ψ::Vector{Complex{Float64}}, site::Int, N::Int)
 end
 
 
-function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int,Int}, Nx::Int, Ny::Int)
+function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int,Int}, Nx::Int, Ny::Int, fermions::Bool)
     # Calculate the expectation value of the current operator for a given bond
     
     N = Nx * Ny
@@ -21,13 +21,13 @@ function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tup
 
     if x1 == x2  # Vertical bond
 
-        res += -im * ψ' * (c_dagger_op(n1, N) * (c_op(n2, N) * ψ))
-        res += im * ψ' * (c_dagger_op(n2, N) * (c_op(n1, N) * ψ))
+        res += -im * ψ' * (c_dagger_op(n1, N, fermions) * (c_op(n2, N, fermions) * ψ))
+        res += im * ψ' * (c_dagger_op(n2, N, fermions) * (c_op(n1, N, fermions) * ψ))
     
     elseif y1 == y2  # Horizontal bond
 
-        res += -im * exp(im*B*y1) * ψ' * (c_dagger_op(n1, N) * (c_op(n2, N) * ψ))
-        res += im * exp(-im*B*y1) * ψ' * (c_dagger_op(n2, N) * (c_op(n1, N) * ψ))
+        res += -im * exp(im*B*y1) * ψ' * (c_dagger_op(n1, N, fermions) * (c_op(n2, N, fermions) * ψ))
+        res += im * exp(-im*B*y1) * ψ' * (c_dagger_op(n2, N, fermions) * (c_op(n1, N, fermions) * ψ))
 
     end
 

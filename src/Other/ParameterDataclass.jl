@@ -1,6 +1,7 @@
 export SimulationParameters
 export to_dict
 export from_dict
+export get_t_list
 
 struct SimulationParameters
     steps::Int
@@ -55,4 +56,9 @@ function from_dict(dict::Dict)
         drive_type = Symbol(dict[:drive_type]),
         initial_state = Symbol(dict[:initial_state])
     )
+end
+
+
+function get_t_list(parameters::SimulationParameters)
+    return [LinRange(0, parameters.steps * parameters.dt, parameters.steps + 1);]
 end

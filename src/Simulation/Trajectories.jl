@@ -2,7 +2,7 @@ export trajectory
 export run_trajectories
 
 
-function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, parameters::SimulationParameters)
+function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Bool, parameters::SimulationParameters)
     
     steps = parameters.steps
     Nx = parameters.Nx
@@ -30,7 +30,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, parameters::S
     density_correlations = zeros(Float64, N, N)
 
     n_list[1, :] = [n_expectation(ψ, n, N) for n in 1:N]
-    currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny) for bond in bonds]
+    currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
 
     for step in 1:steps
 
@@ -38,14 +38,14 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, parameters::S
 
         # Kraus operator for inflow
         K_in = pick_kraus(p, ψ, site_in, N)
-        apply_kraus!(ψ, K_in, site_in, N; type=:inflow, drive_type=drive_type)
+        ψ = apply_kraus(ψ, K_in, site_in, N; type=:inflow, drive_type=drive_type, fermions)
 
         K_out = pick_kraus(p, ψ, site_out, N)
-        apply_kraus!(ψ, K_out, site_out, N; type=:outflow, drive_type=drive_type)
+        ψ = apply_kraus(ψ, K_out, site_out, N; type=:outflow, drive_type=drive_type, fermions)
 
         K_list[step, K_in + 3*K_out + 1] = 1
         n_list[step+1, :] = [n_expectation(ψ, n, N) for n in 1:N]
-        currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny) for bond in bonds]
+        currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
     
         if step == steps[end]
             # Add density correlations!
@@ -58,7 +58,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, parameters::S
 end
 
 
-function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, parameters::SimulationParameters)
+function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, fermions::Bool, parameters::SimulationParameters)
 
     steps = parameters.steps
     Nx = parameters.Nx
@@ -75,7 +75,7 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     prog = Progress(num_iterations; desc="Running trajectories...", showspeed=true)
     for run in 1:num_iterations
 
-        K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, parameters)
+        K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
 
         K_list_accumulated += K_list
         n_list_accumulated += n_list
@@ -87,10 +87,11 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     end
 
     data = Dict(
-        :K_list => K_list_accumulated,
-        :n_list => n_list_accumulated,
-        :currents_list => currents_list_accumulated,
-        :density_correlations => density_correlations_accumulated,
+        :K_avg => K_list_accumulated ./ num_iterations,
+        :n_avg => n_list_accumulated ./ num_iterations,
+        :avg_currents => currents_list_accumulated ./ num_iterations,
+        :avg_dd_correlations => density_correlations_accumulated ./ num_iterations,
+        :t_list => get_t_list(parameters),
         :params => to_dict(parameters)
     )
 
