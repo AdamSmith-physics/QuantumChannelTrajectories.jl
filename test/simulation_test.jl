@@ -5,19 +5,14 @@ using LinearAlgebra
 using QuantumChannelTrajectories
 
 
-Nx = 4
+Nx = 3
 Ny = 4
 
 N = Nx * Ny
 
-ψ = rand(Complex{Float64}, 2^(Nx * Ny))
-normalize!(ψ)
+num_iterations = 10
 
-kraus = pick_kraus(0.5,ψ, 1, Nx * Ny)
-
-bonds = get_bonds(Nx, Ny, 1, 2)
-
-x = SimulationParameters(
+parameters::SimulationParameters = SimulationParameters(
     steps=100, 
     Nx=Nx, 
     Ny=Ny, 
@@ -30,4 +25,9 @@ x = SimulationParameters(
     drive_type="current", 
     initial_state="random")
 
-x.drive_type
+hamiltonian = create_hamiltonian(Nx, Ny; fermions=true);
+GC.gc();
+
+ψ = random_state(Nx, Ny);
+
+data = trajectory(hamiltonian, ψ, num_iterations, parameters)

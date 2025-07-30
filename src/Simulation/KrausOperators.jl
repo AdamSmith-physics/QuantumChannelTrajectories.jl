@@ -56,40 +56,27 @@ end
 
 function apply_kraus!(ψ::Vector{Complex{Float64}}, K::Int, site::Int, N::Int; type=:inflow, drive_type="current")
 
+    # This top part is same for current/dephasing and inflow/outflow
     if K == 0
         # No Kraus operator applied
-        return ψ
+        return nothing
+    elseif K == 1
+        ψ = one_minus_n_op(site, N) * ψ
+    elseif K == 2
+        ψ = n_op(site, N) * ψ
+    else
+        error("Invalid Kraus operator index: $K")
     end
 
-
-    This needs completing! Getting a bit of a mess!
-    if drive_type == "current"
-        # Apply current Kraus operator
-        if K == 1
-            # Apply inflow Kraus operator
-            ψ = c_dagger_op(site, N) * ψ
-        elseif K == 2
-            # Apply outflow Kraus operator
-            ψ = n_op(site, N) * ψ
-        end
-   
-    elseif drive_type == "dephasing"
-        # Apply dephasing Kraus operator
-        if K == 1
-            # Apply 1-n
-            ψ = one_minus_n_op(site, N) * ψ
-        elseif K == 2
-            # Apply n
-            ψ = n_op(site, N) * ψ
-        end
+    if drive_type == "current" && type == :inflow && K == 1
+        # Apply inflow Kraus operator
+        ψ = c_dagger_op(site, N) * ψ
+    elseif drive_type == "current" && type == :outflow && K == 2
+        # Apply outflow Kraus operator
+        ψ = c_op(site, N) * ψ
     end
 
+    normalize!(ψ)
 
-
-
-
-
-
-
-    return normalize!(ψ)
+    return nothing
 end

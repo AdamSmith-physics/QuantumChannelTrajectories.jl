@@ -3,6 +3,7 @@ module QuantumChannelTrajectories
 using LinearAlgebra
 using SparseArrays
 using KrylovKit
+using ProgressMeter
 
 include("Other/ParameterDataclass.jl")
 

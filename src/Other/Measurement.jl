@@ -8,8 +8,11 @@ function n_expectation(ψ::Vector{Complex{Float64}}, site::Int, N::Int)
 end
 
 
-function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int, Int}, N::Int)
+function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int, Int}, Nx::Int, Ny::Int)
     # Calculate the expectation value of the current operator for a given bond
+    
+    N = Nx * Ny
+    
     n1, n2 = bond
     (x1, y1) = ((n1-1) % Nx + 1, n1 ÷ Nx + 1)
     (x2, y2) = ((n2-1) % Nx + 1, n2 ÷ Nx + 1)
