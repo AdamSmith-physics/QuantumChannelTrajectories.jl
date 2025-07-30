@@ -68,10 +68,10 @@ function apply_kraus!(ψ::Vector{Complex{Float64}}, K::Int, site::Int, N::Int; t
         error("Invalid Kraus operator index: $K")
     end
 
-    if drive_type == "current" && type == :inflow && K == 1
+    if drive_type == :current && type == :inflow && K == 1
         # Apply inflow Kraus operator
         ψ = c_dagger_op(site, N) * ψ
-    elseif drive_type == "current" && type == :outflow && K == 2
+    elseif drive_type == :current && type == :outflow && K == 2
         # Apply outflow Kraus operator
         ψ = c_op(site, N) * ψ
     end

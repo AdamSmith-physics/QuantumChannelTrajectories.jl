@@ -10,13 +10,47 @@ struct SimulationParameters
     bonds::Vector{Tuple{Int, Int}}
     site_in::Int
     site_out::Int
-    drive_type::String  # "current", "dephasing"
-    initial_state::String  # "checkerboard", "empty", "random", "custom"
+    drive_type::Symbol  # :current, :dephasing
+    initial_state::Symbol  # :checkerboard, :empty, :random, :custom
 end
 
 # Constructor with default values
 function SimulationParameters(; steps, Nx, Ny, p, bonds, site_in, site_out, dt, B,
-                            drive_type::String = "current", 
-                            initial_state::String = "random")
+                            drive_type = :current, 
+                            initial_state = :random)
     return SimulationParameters(steps, Nx, Ny, dt, p, B, bonds, site_in, site_out, drive_type, initial_state)
+end
+
+
+function to_dict(params::SimulationParameters)
+    return Dict(
+        :steps => params.steps,
+        :Nx => params.Nx,
+        :Ny => params.Ny,
+        :dt => params.dt,
+        :p => params.p,
+        :B => params.B,
+        :bonds => params.bonds,
+        :site_in => params.site_in,
+        :site_out => params.site_out,
+        :drive_type => string(params.drive_type),
+        :initial_state => string(params.initial_state)
+    )
+end
+
+
+function from_dict(dict::Dict)
+    return SimulationParameters(
+        steps = dict[:steps],
+        Nx = dict[:Nx],
+        Ny = dict[:Ny],
+        dt = dict[:dt],
+        p = dict[:p],
+        B = dict[:B],
+        bonds = dict[:bonds],
+        site_in = dict[:site_in],
+        site_out = dict[:site_out],
+        drive_type = Symbol(dict[:drive_type]),
+        initial_state = Symbol(dict[:initial_state])
+    )
 end
