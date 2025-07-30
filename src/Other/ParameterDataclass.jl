@@ -1,4 +1,6 @@
 export SimulationParameters
+export to_dict
+export from_dict
 
 struct SimulationParameters
     steps::Int
@@ -7,7 +9,7 @@ struct SimulationParameters
     dt::Float64
     p::Float64
     B::Float64
-    bonds::Vector{Tuple{Int, Int}}
+    bonds::Vector{Tuple{Int,Int}}  # List of bonds as pairs of sites
     site_in::Int
     site_out::Int
     drive_type::Symbol  # :current, :dephasing

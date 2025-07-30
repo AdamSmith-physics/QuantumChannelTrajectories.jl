@@ -74,7 +74,7 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 end
 
 
-function get_bonds(Nx::Int, Ny::Int, site_in::Int, site_out::Int)::Vector{Tuple{Int, Int}}
+function get_bonds(Nx::Int, Ny::Int, site_in::Int, site_out::Int)::Vector{Tuple{Int,Int}}
     bonds = []
 
     # Horizontal bonds

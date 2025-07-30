@@ -2,19 +2,19 @@ export trajectory
 export run_trajectories
 
 
-function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, params::SimulationParameters)
+function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, parameters::SimulationParameters)
     
-    steps = params.steps
-    Nx = params.Nx
-    Ny = params.Ny
-    dt = params.dt
-    p = params.p
-    B = params.B
-    bonds = params.bonds
-    site_in = params.site_in
-    site_out = params.site_out
-    drive_type = params.drive_type
-    initial_state = params.initial_state
+    steps = parameters.steps
+    Nx = parameters.Nx
+    Ny = parameters.Ny
+    dt = parameters.dt
+    p = parameters.p
+    B = parameters.B
+    bonds = parameters.bonds
+    site_in = parameters.site_in
+    site_out = parameters.site_out
+    drive_type = parameters.drive_type
+    initial_state = parameters.initial_state
 
     N = Nx * Ny
 
@@ -58,12 +58,12 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, params::Simul
 end
 
 
-function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, params::SimulationParameters)
+function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, parameters::SimulationParameters)
 
-    steps = params.steps
-    Nx = params.Nx
-    Ny = params.Ny
-    bonds = params.bonds
+    steps = parameters.steps
+    Nx = parameters.Nx
+    Ny = parameters.Ny
+    bonds = parameters.bonds
 
     N = Nx * Ny
 
@@ -75,7 +75,7 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     prog = Progress(num_iterations; desc="Running trajectories...", showspeed=true)
     for run in 1:num_iterations
 
-        K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, params)
+        K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, parameters)
 
         K_list_accumulated += K_list
         n_list_accumulated += n_list
@@ -90,7 +90,8 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
         :K_list => K_list_accumulated,
         :n_list => n_list_accumulated,
         :currents_list => currents_list_accumulated,
-        :density_correlations => density_correlations_accumulated
+        :density_correlations => density_correlations_accumulated,
+        :params => to_dict(parameters)
     )
 
     return data

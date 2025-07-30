@@ -1,5 +1,8 @@
 using HDF5
 
+export save_to_hdf5, load_from_hdf5, load_key_from_hdf5
+
+
 ### Writing to HDF5 files ###
 
 function _save_dict_to_h5(group, data_dict)
@@ -41,12 +44,16 @@ function _load_dict_from_h5(group)
         item = group[key]
         if isa(item, HDF5.Group)
             # If it's a group, recursively load it
-            data_dict[key] = _load_dict_from_h5(item)
+            data_dict[Symbol(key)] = _load_dict_from_h5(item)
         else
             # Otherwise, it's a dataset
             data = read(item)
+            # Convert NamedTuple vectors to regular tuple vectors
+            if isa(data, Vector) && !isempty(data) && isa(data[1], NamedTuple)
+                data = [_convert_named_tuple_to_tuple(nt) for nt in data]
+            end
             # Julia automatically handles string decoding
-            data_dict[key] = data
+            data_dict[Symbol(key)] = data
         end
     end
     return data_dict
@@ -67,7 +74,7 @@ function load_from_hdf5(filename)
     end
 end
 
-function load_key_from_hdf5(filename, key)
+function load_key_from_hdf5(filename, key::Symbol)
     """
     Load a specific key from an HDF5 file.
 
@@ -78,16 +85,53 @@ function load_key_from_hdf5(filename, key)
     Returns:
     The data associated with the specified key.
     """
+    key_string = string(key)
+
     h5open(filename, "r") do f
-        if haskey(f, key)
-            if isa(f[key], HDF5.Group)
+        if haskey(f, key_string)
+            if isa(f[key_string], HDF5.Group)
                 # If it's a group, recursively load it
-                return _load_dict_from_h5(f[key])
-            else
-                return read(f[key])
+                return _load_dict_from_h5(f[key_string])
             end
+
+            data = read(f[key_string])
+            # Convert NamedTuple vectors to regular tuple vectors
+            if isa(data, Vector) && !isempty(data) && isa(data[1], NamedTuple)
+                data = [_convert_named_tuple_to_tuple(nt) for nt in data]
+            end
+            # Julia automatically handles string decoding
+            return data
         else
             error("Key '$key' not found in the file '$filename'.")
         end
     end
+end
+
+
+function _convert_named_tuple_to_tuple(named_tuple::NamedTuple)
+    """
+    Convert a NamedTuple to a regular Tuple.
+    """
+    return Tuple(values(named_tuple))
+end
+
+function _convert_named_tuple_vector_to_tuples(named_tuple_vector::Vector{NamedTuple})
+    """
+    Convert a vector of NamedTuples to a vector of Tuples.
+    """
+    return [_convert_named_tuple_to_tuple(nt) for nt in named_tuple_vector]
+end
+
+function _convert_named_tuple(named_tuple::NamedTuple)
+    """
+    Convert a NamedTuple to a regular Dict.
+    """
+    return Dict(parse(Int, string(k)) => v for (k, v) in pairs(named_tuple))
+end
+
+function _convert_named_tuple_vector(named_tuple_vector::Vector{NamedTuple})
+    """
+    Convert a vector of NamedTuples to a vector of Dicts.
+    """
+    return [_convert_named_tuple(nt) for nt in named_tuple_vector]
 end
