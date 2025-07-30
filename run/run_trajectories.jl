@@ -18,14 +18,15 @@ Ny = 4
 N = Nx*Ny
 V = 0.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-B = b*pi # Magnetic field in units of flux quantum
 num_iterations = 50
 steps = 50
 site_in = 1  # Site where the current is injected
-site_out = N  # Site where the current is extracted
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
 fermions = false  # Whether to use fermionic statistics
+B = b*pi # Magnetic field in units of flux quantum
+site_out = N  # Site where the current is extracted
+
 
 parameters = SimulationParameters(
     steps=steps, 
