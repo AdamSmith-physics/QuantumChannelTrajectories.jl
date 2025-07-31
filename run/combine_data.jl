@@ -4,13 +4,13 @@ using QuantumChannelTrajectories
 #### Copy and paste from the file you ran! ###
 dt = 0.2
 p = 0.4
-Nx = 4
-Ny = 4
+Nx = 5
+Ny = 5
 N = Nx*Ny
 V = 0.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 50
-steps = 50
+num_iterations = 10
+steps = 30
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
@@ -35,7 +35,7 @@ completed_trajectories = 0
 t_list = nothing
 parameters = nothing
 
-num_processes = 1
+num_processes = 50
 for run_idx in 1:num_processes
 
     filename = "data/bosons_$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_t0.0_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
