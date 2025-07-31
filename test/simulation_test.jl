@@ -28,7 +28,7 @@ parameters = SimulationParameters(
 
 
 @time hamiltonian = create_hamiltonian(Nx, Ny; fermions=true);
-# hamiltonian = nothing
+hamiltonian = nothing
 GC.gc();
 
 ψ = random_state(Nx, Ny);
