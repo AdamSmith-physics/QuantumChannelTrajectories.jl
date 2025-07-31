@@ -1,21 +1,10 @@
 #!/bin/bash
 
-# This specifies type of node job will use #SBATCH --nodes=1
-#SBATCH --partition=defq
-
-# This specifies that this is an array job with 10 tasks
-#SBATCH --array=1-50
-
-# This specifies type of nodes job will use
+#SBATCH --partition=hmemq
+#SBATCH --array=1-80
 #SBATCH --nodes=1
-
-# This specifies job uses 1 core
 #SBATCH --ntasks-per-node=1
-
-# This specifies maximum memory use will be 2 gigabytes
 #SBATCH --mem=36g
-
-# This specifies job will last no longer than 1 hour
 #SBATCH --time=1-00:00:00
 
 # Put slurm outputs in a logs directory to keep working directory clean
