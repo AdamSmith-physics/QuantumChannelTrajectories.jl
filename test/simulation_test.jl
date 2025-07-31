@@ -6,8 +6,8 @@ using QuantumChannelTrajectories
 
 BLAS.set_num_threads(1) 
 
-Nx = 3
-Ny = 3
+Nx = 5
+Ny = 5
 
 N = Nx * Ny
 
@@ -27,7 +27,8 @@ parameters = SimulationParameters(
     initial_state=:random)
 
 
-hamiltonian = create_hamiltonian(Nx, Ny; fermions=true);
+@time hamiltonian = create_hamiltonian(Nx, Ny; fermions=true);
+# hamiltonian = nothing
 GC.gc();
 
 ψ = random_state(Nx, Ny);

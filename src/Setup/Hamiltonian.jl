@@ -16,6 +16,7 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
     hamiltonian = spzeros(Complex{Float64}, 2^N, 2^N)
 
     local_operator = -kron(PauliX,PauliX)/2 - kron(PauliY,PauliY)/2 + V*kron(density_operator,density_operator)
+    row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
     for ny in 1:Ny
         # Construct horizontal operators first
         row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
@@ -36,20 +37,20 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
     end
 
-    row_operator = nothing
+    
 
     # This does not contain magnetic field yet!
     fill_operator = fermions ? PauliZ : sparse(I, 2, 2)
-    print("Filling operator: $fill_operator\n")
     local_operator = -kron(PauliX, fill(fill_operator,Nx-1)... ,PauliX) / 2
     local_operator -= kron(PauliY, fill(fill_operator,Nx-1)..., PauliY) / 2
     local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
+
     for ny in 1:Ny-1
         # Construct vertical operators
-        col_operator = spzeros(Complex{Float64}, 2^(2*Nx), 2^(2*Nx))
+        row_operator = spzeros(Complex{Float64}, 2^(2*Nx), 2^(2*Nx))
 
         for nx in 1:Nx
-            col_operator += kron(
+            row_operator += kron(
                 sparse(I, 2^(nx-1), 2^(nx-1)),
                 local_operator,
                 sparse(I, 2^(Nx-nx), 2^(Nx-nx))
@@ -58,13 +59,13 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
         hamiltonian += kron(
             sparse(I, 2^(Nx*(ny-1)), 2^(Nx*(ny-1))),
-            col_operator,
+            row_operator,
             sparse(I, 2^(N - 2*Nx - Nx*(ny-1)), 2^(N - 2*Nx - Nx*(ny-1)))
         )
 
     end
 
-    col_operator = nothing
+    row_operator = nothing
     local_operator = nothing
 
     return hamiltonian
