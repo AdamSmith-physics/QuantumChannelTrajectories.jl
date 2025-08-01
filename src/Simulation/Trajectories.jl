@@ -32,6 +32,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     n_list[1, :] = [n_expectation(ψ, n, N) for n in 1:N]
     currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
 
+    prog = Progress(steps; dt=0.1, desc="Running trajectory...", showspeed=true)
     for step in 1:steps
 
         ψ, info = exponentiate(hamiltonian, -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
@@ -50,6 +51,8 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
         if step == steps[end]
             # Add density correlations!
         end
+
+        next!(prog; showvalues = [("Completed timestep", "$step / $steps")])
 
     end
 
@@ -76,8 +79,13 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     currents_list_accumulated = zeros(Float64, steps+1, length(bonds))
     density_correlations_accumulated = zeros(Float64, N, N)
 
-    prog = Progress(num_iterations; desc="Running trajectories...", showspeed=true)
+
     for run in 1:num_iterations
+
+        t_start = time()
+
+        println("Running trajectory $run / $num_iterations")
+        flush(stdout)
 
         K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
 
@@ -99,8 +107,10 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
             save_to_hdf5(data, filename)
         end
 
-        next!(prog; showvalues = [("Completed trajectories", "$run / $num_iterations")])
+        t_end = time()
         
+        _print_update(t_start, t_end, run, num_iterations)
+
     end
 
     if eager_saving
@@ -119,4 +129,23 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
 
     return data
 
+end
+
+
+function _print_update(t_start::Float64, t_end::Float64, run::Int, num_iterations::Int)
+    elapsed_time = t_end - t_start
+
+    println("Completed trajectory $run / $num_iterations")
+    println("Elapsed time for trajectory $run: $(elapsed_time) seconds")
+    
+    # remaining time in hours:minutes:seconds (e.g. 01:05:23)
+    remaining_time = (num_iterations - run) * elapsed_time
+    hours = Int(div(remaining_time, 3600))
+    minutes = Int(div(remaining_time % 3600, 60))
+    seconds = Int(round(remaining_time % 60))
+    # remaining time in hours:minutes:seconds (e.g. 01:05:23)
+    println("Estimated remaining time: $(lpad(hours, 2, '0')):$(lpad(minutes, 2, '0')):$(lpad(seconds, 2, '0'))")
+    
+    println("")
+    flush(stdout)
 end

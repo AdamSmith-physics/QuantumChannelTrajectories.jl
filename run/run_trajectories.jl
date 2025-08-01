@@ -13,13 +13,13 @@ end
 
 dt = 0.5
 p = 0.5
-Nx = 5
-Ny = 5
+Nx = 4
+Ny = 4
 N = Nx*Ny
 V = 3.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 13
-steps = 100
+num_iterations = 50
+steps = 200
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
@@ -50,14 +50,14 @@ else
     filename = "data/bosons_"
 end
 
-filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_t0.0_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
+filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
 if run_id !== nothing
     filename *= "_run$(run_id)"
 end
 filename *= ".h5"
 
 
-hamiltonian = create_hamiltonian(Nx, Ny; fermions=fermions);
+hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
 GC.gc();
 
 ψ = generate_initial_state(Nx, Ny; initial_state=initial_state);

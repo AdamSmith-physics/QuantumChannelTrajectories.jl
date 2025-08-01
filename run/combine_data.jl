@@ -2,14 +2,14 @@ using Printf
 using QuantumChannelTrajectories
 
 #### Copy and paste from the file you ran! ###
-dt = 0.5
-p = 0.5
-Nx = 5
-Ny = 5
+dt = 0.2
+p = 0.4
+Nx = 4
+Ny = 4
 N = Nx*Ny
-V = 3.0
-b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 13
+V = 0.0
+b = 1.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
+num_iterations = 50
 steps = 100
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
@@ -35,13 +35,19 @@ completed_trajectories = 0
 t_list = nothing
 parameters = nothing
 
-num_processes = 80
+filename = ""
+if fermions
+    filename = "data/fermions_"
+else
+    filename = "data/bosons_"
+end
+filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
+
+num_processes = 15
 for run_idx in 1:num_processes
 
-    filename = "data/bosons_$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_t0.0_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
-
     if !isfile(filename * "_run$(run_idx)" * ".h5")
-        println("Skipping run $(run_idx), file does not exist.")
+        println("Skipping run $(run_idx), file does not exist with name: $(filename * "_run$(run_idx)" * ".h5")")
         continue
     end
 
@@ -69,7 +75,15 @@ final_data = Dict(
         :params => parameters
     )
 
-filename = "data/bosons_$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_t0.0_steps$(steps)_trajectories$(completed_trajectories)_$(string(drive_type))_$(string(initial_state))"
+
+filename = ""
+if fermions
+    filename = "data/fermions_"
+else
+    filename = "data/bosons_"
+end
+filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(completed_trajectories)_$(string(drive_type))_$(string(initial_state))"
+
 save_to_hdf5(final_data, filename * ".h5")
 
 # # delete files after combining

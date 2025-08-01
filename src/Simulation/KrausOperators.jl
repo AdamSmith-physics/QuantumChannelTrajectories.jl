@@ -16,13 +16,16 @@ one_minus_n_local = sparse([1.0 0.0; 0.0 0.0]) # Operator for 1 - n
 function _pad_operator(op::SparseMatrixCSC, n::Int, N::Int, JW::Bool)
     # Pad the operator to the full size of the system
     if JW
-        if n == 1
-            pre_string = sparse(I, 1, 1)
-        elseif n == 2
-            pre_string = PauliZ
-        else
-            pre_string = kron(fill(PauliZ, n-1)...)
-        end
+        # if n == 1
+        #     pre_string = sparse(I, 1, 1)
+        # elseif n == 2
+        #     pre_string = PauliZ
+        # else
+        #     pre_string = kron(fill(PauliZ, n-1)...)
+        # end
+
+        pre_string = kron([[sparse(I,1,1)];fill(PauliZ, n-1);[sparse(I,1,1)]]...)
+
     else
         pre_string = sparse(I, 2^(n-1), 2^(n-1))
     end

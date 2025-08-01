@@ -9,15 +9,17 @@ export get_bonds
 
     Creates a Hamiltonian for a 2D system with dimensions Nx and Ny.
 """
-function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool = false)
+function create_hamiltonian(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0, fermions::Bool = false)
 
     N::Int = Nx * Ny
 
     hamiltonian = spzeros(Complex{Float64}, 2^N, 2^N)
 
-    local_operator = -kron(PauliX,PauliX)/2 - kron(PauliY,PauliY)/2 + V*kron(density_operator,density_operator)
+    
     row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
     for ny in 1:Ny
+        local_operator = -exp(im*B*ny)*kron(Sigma_plus,Sigma_minus) - exp(-im*B*ny)*kron(Sigma_minus,Sigma_plus) + V*kron(density_operator,density_operator)
+
         # Construct horizontal operators first
         row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
 
@@ -41,8 +43,8 @@ function create_hamiltonian(Nx::Int, Ny::Int; V::Float64 = 0.0, fermions::Bool =
 
     # This does not contain magnetic field yet!
     fill_operator = fermions ? PauliZ : sparse(I, 2, 2)
-    local_operator = -kron(PauliX, fill(fill_operator,Nx-1)... ,PauliX) / 2
-    local_operator -= kron(PauliY, fill(fill_operator,Nx-1)..., PauliY) / 2
+    local_operator = -kron(Sigma_plus, fill(fill_operator,Nx-1)... ,Sigma_minus) 
+    local_operator -= kron(Sigma_minus, fill(fill_operator,Nx-1)..., Sigma_plus) 
     local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
 
     for ny in 1:Ny-1
