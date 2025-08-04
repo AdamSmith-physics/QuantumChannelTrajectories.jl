@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #SBATCH --partition=hmemq
-#SBATCH --array=1-80
+#SBATCH --array=1-75
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=36g
-#SBATCH --time=1-00:00:00
+#SBATCH --mem=40g
+#SBATCH --time=3-00:00:00
 
 # Put slurm outputs in a logs directory to keep working directory clean
 #SBATCH -o ./logs/output-%A_%a.out # STDOUT

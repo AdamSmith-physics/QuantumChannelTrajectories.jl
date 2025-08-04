@@ -13,13 +13,13 @@ end
 
 dt = 0.5
 p = 0.5
-Nx = 4
-Ny = 4
+Nx = 5
+Ny = 5
 N = Nx*Ny
 V = 3.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 50
-steps = 200
+num_iterations = 13
+steps = 150
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom

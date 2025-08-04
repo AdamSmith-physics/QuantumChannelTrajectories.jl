@@ -4,13 +4,13 @@ using QuantumChannelTrajectories
 #### Copy and paste from the file you ran! ###
 dt = 0.5
 p = 0.5
-Nx = 4
-Ny = 4
+Nx = 5
+Ny = 5
 N = Nx*Ny
 V = 3.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 50
-steps = 200
+num_iterations = 13
+steps = 150
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
@@ -43,7 +43,7 @@ else
 end
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
 
-num_processes = 15
+num_processes = 75
 for run_idx in 1:num_processes
 
     if !isfile(filename * "_run$(run_idx)" * ".h5")
