@@ -23,7 +23,7 @@ steps = 50
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = true  # Whether to use fermionic statistics
+fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 

@@ -14,7 +14,7 @@ steps = 50
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = true  # Whether to use fermionic statistics
+fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 ###############################################
@@ -43,7 +43,7 @@ else
 end
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
 
-num_processes = 15
+num_processes = 5
 for run_idx in 1:num_processes
 
     if !isfile(filename * "_run$(run_idx)" * ".h5")
