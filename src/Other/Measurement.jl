@@ -1,5 +1,7 @@
 
 export n_expectation
+export current_expectation
+export density_correlations
 
 function n_expectation(ψ::Vector{Complex{Float64}}, site::Int, N::Int)
     # Calculate the expectation value of the number operator at a given site
@@ -32,6 +34,47 @@ function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tup
     end
 
     return real(res)
+
+end
+
+
+function density_correlations(ψ::Vector{Complex{Float64}}, Nx::Int, Ny::Int)
+
+    N = Nx * Ny
+
+    density_correlations = zeros(Float64, N, N)
+
+    for n1 in 1:N
+        for n2 in n1+1:N
+            # Calculate <n(n1) n(n2)> - <n(n1)> <n(n2)>
+            # This is the connected density-density correlation function
+            density_correlations[n1, n2] = real(ψ' * _n_n(n1, n2, N) * ψ) - n_expectation(ψ, n1, N) * n_expectation(ψ, n2, N)
+        end
+    end
+
+    density_correlations += density_correlations'  # Make it symmetric
+
+    for n in 1:N
+        density_correlations[n, n] = n_expectation(ψ, n, N) - n_expectation(ψ, n, N)^2
+    end
+
+    return density_correlations
+end
+
+
+function _n_n(n1::Int, n2::Int, N::Int)
+    # More efficient calculation of <n(n1) n(n2)>
+    
+    n_min = min(n1, n2)
+    n_max = max(n1, n2)
+
+    return kron(
+        sparse(I, 2^(n_min-1), 2^(n_min-1)),
+        density_operator,
+        sparse(I, 2^(n_max-n_min-1), 2^(n_max-n_min-1)),
+        density_operator,
+        sparse(I, 2^(N - n_max), 2^(N - n_max))
+    )
 
 end
 

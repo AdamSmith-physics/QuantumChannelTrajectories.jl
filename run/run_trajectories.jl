@@ -11,19 +11,19 @@ if length(ARGS) > 0
     run_id = parse(Int, ARGS[1])
 end
 
-dt = 0.5
-p = 0.5
-Nx = 5
-Ny = 5
+dt = 0.25
+p = 0.25
+Nx = 4
+Ny = 4
 N = Nx*Ny
-V = 3.0
+V = 0.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 13
-steps = 150
+num_iterations = 30
+steps = 50
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = false  # Whether to use fermionic statistics
+fermions = true  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 

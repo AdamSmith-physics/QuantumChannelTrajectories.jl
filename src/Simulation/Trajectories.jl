@@ -27,7 +27,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     K_list = zeros(Int, steps, 9)
     n_list = zeros(Float64, steps+1, N)
     currents_list = zeros(Float64, steps+1, length(bonds))
-    density_correlations = zeros(Float64, N, N)
+    dd_correlations = zeros(Float64, N, N)
 
     n_list[1, :] = [n_expectation(ψ, n, N) for n in 1:N]
     currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
@@ -49,14 +49,14 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
         currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
     
         if step == steps[end]
-            # Add density correlations!
+            dd_correlations = density_correlations(ψ, Nx, Ny)
         end
 
         next!(prog; showvalues = [("Completed timestep", "$step / $steps")])
 
     end
 
-    return K_list, n_list, currents_list, density_correlations
+    return K_list, n_list, currents_list, dd_correlations
 
 end
 
@@ -77,7 +77,7 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     K_list_accumulated = zeros(Int, steps, 9)
     n_list_accumulated = zeros(Float64, steps+1, N)
     currents_list_accumulated = zeros(Float64, steps+1, length(bonds))
-    density_correlations_accumulated = zeros(Float64, N, N)
+    dd_correlations_accumulated = zeros(Float64, N, N)
 
 
     for run in 1:num_iterations
@@ -87,19 +87,19 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
         println("Running trajectory $run / $num_iterations")
         flush(stdout)
 
-        K_list, n_list, currents_list, density_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
+        K_list, n_list, currents_list, dd_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
 
         K_list_accumulated .+= K_list
         n_list_accumulated .+= n_list
         currents_list_accumulated .+= currents_list
-        density_correlations_accumulated .+= density_correlations
+        dd_correlations_accumulated .+= dd_correlations
 
         if eager_saving
             data = Dict(
                 :K_avg => K_list_accumulated,
                 :n_avg => n_list_accumulated,
                 :avg_currents => currents_list_accumulated,
-                :avg_dd_correlations => density_correlations_accumulated,
+                :avg_dd_correlations => dd_correlations_accumulated,
                 :t_list => get_t_list(parameters),
                 :params => to_dict(parameters),
                 :completed_trajectories => run
@@ -121,7 +121,7 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
         :K_avg => K_list_accumulated,
         :n_avg => n_list_accumulated,
         :avg_currents => currents_list_accumulated,
-        :avg_dd_correlations => density_correlations_accumulated,
+        :avg_dd_correlations => dd_correlations_accumulated,
         :t_list => get_t_list(parameters),
         :params => to_dict(parameters),
         :completed_trajectories => num_iterations
