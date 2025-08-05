@@ -11,21 +11,42 @@ if length(ARGS) > 0
     run_id = parse(Int, ARGS[1])
 end
 
-dt = 0.25
-p = 0.25
-Nx = 4
-Ny = 4
+# Parameters set at runtime
+dt = parse(Float64, ARGS[2])  # Time step
+p = parse(Float64, ARGS[3])  # Probability of hopping
+Nx = parse(Int, ARGS[4])  # Number of sites in x-direction
+Ny = parse(Int, ARGS[5])  # Number of sites in y-direction
+V = parse(Float64, ARGS[6])  # Interaction strength
+b = parse(Float64, ARGS[7])  # Magnetic field strength
+num_iterations = parse(Int, ARGS[8])  # Number of iterations
+steps = parse(Int, ARGS[9])  # Number of steps in each iteration
+fermions = parse(Bool, ARGS[10])  # Whether to use fermionic statistics
+
+# Change these parameters as needed
 N = Nx*Ny
-V = 0.0
-b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 30
-steps = 50
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
+
+
+println("\nRunning with parameters:")
+# print all parameters separated by newline
+println("dt: $dt \n",
+        "p: $p \n",
+        "Nx: $Nx \n",
+        "Ny: $Ny \n",
+        "V: $V \n",
+        "b: $b \n",
+        "num_iterations: $num_iterations \n",
+        "steps: $steps \n",
+        "fermions: $fermions \n",
+        "site_in: $site_in \n",
+        "drive_type: $drive_type \n",
+        "initial_state: $initial_state \n",
+        "B: $B \n",
+        "site_out: $site_out \n")
 
 
 parameters = SimulationParameters(
@@ -41,6 +62,7 @@ parameters = SimulationParameters(
     drive_type=drive_type, 
     initial_state=initial_state
     )
+
 
 
 filename = ""
