@@ -3,13 +3,13 @@ using QuantumChannelTrajectories
 
 #### Copy and paste from the file you ran! ###
 dt = 0.25
-p = 0.25
+p = 0.5
 Nx = 4
 Ny = 4
 N = Nx*Ny
 V = 0.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 30
+num_iterations = 10
 steps = 50
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
@@ -17,6 +17,10 @@ initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
 fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
+# Optional parameters
+even_parity = false  # Whether to enforce even parity
+pinned_corners = true  # Whether to pin the corners
+single_shot = true  # Whether to perform single shot measurements
 ###############################################
 
 bonds = get_bonds(Nx, Ny, site_in, site_out)
@@ -42,8 +46,17 @@ else
     filename = "data/bosons_"
 end
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
+if even_parity
+    filename *= "_even_parity"
+end
+if pinned_corners
+    filename *= "_pinned_corners"
+end
+if single_shot
+    filename *= "_single_shot"
+end
 
-num_processes = 5
+num_processes = 15
 for run_idx in 1:num_processes
 
     if !isfile(filename * "_run$(run_idx)" * ".h5")
@@ -83,6 +96,15 @@ else
     filename = "data/bosons_"
 end
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(completed_trajectories)_$(string(drive_type))_$(string(initial_state))"
+if even_parity
+    filename *= "_even_parity"
+end
+if pinned_corners
+    filename *= "_pinned_corners"
+end
+if single_shot
+    filename *= "_single_shot"
+end
 
 save_to_hdf5(final_data, filename * ".h5")
 

@@ -9,10 +9,10 @@ dt=0.25
 p=0.5
 Nx=4
 Ny=4
-V=1.5
-b=0.5
-num_iterations=500
-steps=200
+V=0.0
+b=0.0
+num_iterations=10
+steps=50
 fermions=false 
 
 max=15

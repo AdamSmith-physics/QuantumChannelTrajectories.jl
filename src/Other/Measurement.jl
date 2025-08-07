@@ -3,14 +3,21 @@ export n_expectation
 export current_expectation
 export density_correlations
 
-function n_expectation(ψ::Vector{Complex{Float64}}, site::Int, N::Int)
+
+function n_expectation(ψ::Vector{Complex{Float64}}, site::Int, N::Int; single_shot::Bool = false)
     # Calculate the expectation value of the number operator at a given site
     n_op_matrix = n_op(site, N)
-    return real(ψ' * n_op_matrix * ψ)
+    n_exp = real(ψ' * n_op_matrix * ψ)
+
+    if !single_shot
+        return n_exp
+    else
+        return _single_shot(n_exp, 0.0, 1.0)
+    end
 end
 
 
-function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int,Int}, Nx::Int, Ny::Int, fermions::Bool)
+function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tuple{Int,Int}, Nx::Int, Ny::Int, fermions::Bool; single_shot::Bool = false)
     # Calculate the expectation value of the current operator for a given bond
     
     N = Nx * Ny
@@ -20,25 +27,36 @@ function current_expectation(ψ::Vector{Complex{Float64}}, B::Float64, bond::Tup
     (x2, y2) = ((n2-1) % Nx + 1, (n2-1) ÷ Nx + 1)
 
     res = 0.0
+    term1 = 0.0
+    term2 = 0.0
 
     if x1 == x2  # Vertical bond
 
-        res += -im * ψ' * (_c_dag_c(n1,n2,N,fermions) * ψ)
-        res += im * ψ' * (_c_dag_c(n2,n1,N,fermions) * ψ)
+        term1 = real(-im * ψ' * (_c_dag_c(n1,n2,N,fermions) * ψ))
+        term2 = real(im * ψ' * (_c_dag_c(n2,n1,N,fermions) * ψ))
     
     elseif y1 == y2  # Horizontal bond
 
-        res += -im * exp(im*B*y1) * ψ' * (_c_dag_c(n1,n2,N,fermions)  * ψ)
-        res += im * exp(-im*B*y1) * ψ' * (_c_dag_c(n2,n1,N,fermions) * ψ)
+        term1 = real(-im * exp(im*B*y1) * ψ' * (_c_dag_c(n1,n2,N,fermions)  * ψ))
+        term2 = real(im * exp(-im*B*y1) * ψ' * (_c_dag_c(n2,n1,N,fermions) * ψ))
 
     end
 
-    return real(res)
+    if single_shot
+        # Need to sample each term independently
+        term1 = _single_shot(term1, -1.0, 1.0)
+        term2 = _single_shot(term2, -1.0, 1.0)
+    end
+
+    res = term1 + term2
+
+    return res
 
 end
 
 
 function density_correlations(ψ::Vector{Complex{Float64}}, Nx::Int, Ny::Int)
+    # Doesn't currently support single shot!
 
     N = Nx * Ny
 
@@ -48,6 +66,7 @@ function density_correlations(ψ::Vector{Complex{Float64}}, Nx::Int, Ny::Int)
         for n2 in n1+1:N
             # Calculate <n(n1) n(n2)> - <n(n1)> <n(n2)>
             # This is the connected density-density correlation function
+
             density_correlations[n1, n2] = real(ψ' * _n_n(n1, n2, N) * ψ) - n_expectation(ψ, n1, N) * n_expectation(ψ, n2, N)
         end
     end
@@ -59,6 +78,18 @@ function density_correlations(ψ::Vector{Complex{Float64}}, Nx::Int, Ny::Int)
     end
 
     return density_correlations
+end
+
+
+function _single_shot(value::Float64, min::Float64, max::Float64)::Float64
+
+    sample = (max-min)*rand() + min
+
+    if sample < value
+        return max
+    else
+        return min
+    end
 end
 
 

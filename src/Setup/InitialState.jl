@@ -66,19 +66,29 @@ function filled_state(Nx::Int, Ny::Int)
 end
 
 
-function random_state(Nx::Int, Ny::Int; even_parity::Bool = false)
+function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corners::Bool = false, site_in::Int = 1, site_out::Int = Nx * Ny)
     occupation_list = rand(0:1, Nx * Ny)
+
+    if pinned_corners
+        occupation_list[site_in] = 1
+        occupation_list[site_out] = 0
+    end
 
     # fix if even parity is required
     if even_parity
-        occupation_list[1] = sum(occupation_list[2:end]) % 2
+        # create list of sites not including site_in and site_out
+        sites = collect(1:Nx*Ny)
+        sites = deleteat!(sites, [site_in, site_out])
+        # select a site from the list at random
+        site = rand(sites)
+        occupation_list[site] = (sum(occupation_list) - occupation_list[site]) % 2
     end
 
     return product_state(occupation_list, Nx, Ny)
 end
 
 
-function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random, even_parity::Bool = false)
+function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random)
     if initial_state == :checkerboard
         return checkerboard_state(Nx, Ny)
     elseif initial_state == :empty
@@ -86,7 +96,7 @@ function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :rando
     elseif initial_state == :filled
         return filled_state(Nx, Ny)
     elseif initial_state == :random
-        return random_state(Nx, Ny, even_parity=even_parity)
+        return random_state(Nx, Ny)  # optional parameters not needed since they will be overwritten each trajectory
     else
         throw(ArgumentError("Unknown initial state: $initial_state"))
     end

@@ -15,11 +15,16 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     site_out = parameters.site_out
     drive_type = parameters.drive_type
     initial_state = parameters.initial_state
+    # optional parameters
+    even_parity = parameters.even_parity
+    pinned_corners = parameters.pinned_corners
+    single_shot = parameters.single_shot
+
 
     N = Nx * Ny
 
     if initial_state == :random
-        ψ = random_state(Nx, Ny)
+        ψ = random_state(Nx, Ny; even_parity = even_parity, pinned_corners = pinned_corners, site_in = site_in, site_out = site_out)
     else
         ψ = copy(ψ_init)
     end
@@ -29,8 +34,8 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     currents_list = zeros(Float64, steps+1, length(bonds))
     dd_correlations = zeros(Float64, N, N)
 
-    n_list[1, :] = [n_expectation(ψ, n, N) for n in 1:N]
-    currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
+    n_list[1, :] = [n_expectation(ψ, n, N; single_shot=single_shot) for n in 1:N]
+    currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions; single_shot=single_shot) for bond in bonds]
 
     prog = Progress(steps; dt=0.1, desc="Running trajectory...", showspeed=true)
     for step in 1:steps
@@ -45,8 +50,8 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
         ψ = apply_kraus(ψ, K_out, site_out, N; type=:outflow, drive_type=drive_type, fermions)
 
         K_list[step, K_in + 3*K_out + 1] = 1
-        n_list[step+1, :] = [n_expectation(ψ, n, N) for n in 1:N]
-        currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions) for bond in bonds]
+        n_list[step+1, :] = [n_expectation(ψ, n, N; single_shot=single_shot) for n in 1:N]
+        currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions; single_shot=single_shot) for bond in bonds]
     
         if step == steps[end]
             dd_correlations = density_correlations(ψ, Nx, Ny)
