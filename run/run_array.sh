@@ -2,7 +2,7 @@
 
 # defq, shortq, hmemq
 #SBATCH --partition=defq
-#SBATCH --array=1-20
+#SBATCH --array=1-40
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=2g
@@ -16,14 +16,14 @@
 TASK=${SLURM_ARRAY_TASK_ID}
 
 dt=0.25
-p=0.25
+p=0.5
 Nx=4
 Ny=4
-V=1.0
-b=0.1
-num_iterations=500
-steps=100
-fermions=false 
+V=1.5
+b=-0.5
+num_iterations=25
+steps=400
+fermions=true 
 
 echo "Running Job $TASK on `hostname`"
 cd ${SLURM_SUBMIT_DIR}

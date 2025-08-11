@@ -15,6 +15,6 @@ cd ${SLURM_SUBMIT_DIR}
 
 module load julia-uoneasy/1.10.4-linux-x86_64
 
-nohup julia --project=. run/combine_data.jl
+julia --project=. run/combine_data.jl
 
 echo "Finished job now"
