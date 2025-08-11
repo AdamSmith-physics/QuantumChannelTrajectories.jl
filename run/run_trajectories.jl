@@ -30,6 +30,11 @@ initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 
+# Optional parameters
+even_parity = false  # Whether to enforce even parity
+pinned_corners = true  # Whether to pin the corners
+single_shot = true
+
 
 println("\nRunning with parameters:")
 # print all parameters separated by newline
@@ -60,7 +65,10 @@ parameters = SimulationParameters(
     site_in=site_in, 
     site_out=site_out, 
     drive_type=drive_type, 
-    initial_state=initial_state
+    initial_state=initial_state,
+    even_parity=even_parity,
+    pinned_corners=pinned_corners,
+    single_shot=single_shot
     )
 
 
@@ -73,6 +81,15 @@ else
 end
 
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(num_iterations)_$(string(drive_type))_$(string(initial_state))"
+if even_parity
+    filename *= "_even_parity"
+end
+if pinned_corners
+    filename *= "_pinned_corners"
+end
+if single_shot
+    filename *= "_single_shot"
+end
 if run_id !== nothing
     filename *= "_run$(run_id)"
 end

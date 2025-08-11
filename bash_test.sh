@@ -6,13 +6,13 @@ if [ ! -d "logs" ]; then
 fi
 
 dt=0.25
-p=0.25
+p=0.5
 Nx=4
 Ny=4
-V=1.0
-b=0.1
-num_iterations=500
-steps=100
+V=0.0
+b=0.0
+num_iterations=10
+steps=50
 fermions=false 
 
 max=15
