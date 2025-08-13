@@ -81,7 +81,9 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
 
     K_list_accumulated = zeros(Int, steps, 9)
     n_list_accumulated = zeros(Float64, steps+1, N)
+    n_sq_list_accumulated = zeros(Float64, steps+1, N)
     currents_list_accumulated = zeros(Float64, steps+1, length(bonds))
+    currents_sq_list_accumulated = zeros(Float64, steps+1, length(bonds))
     dd_correlations_accumulated = zeros(Float64, N, N)
 
 
@@ -96,14 +98,18 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
 
         K_list_accumulated .+= K_list
         n_list_accumulated .+= n_list
+        n_sq_list_accumulated .+= n_list.^2
         currents_list_accumulated .+= currents_list
+        currents_sq_list_accumulated .+= currents_list.^2
         dd_correlations_accumulated .+= dd_correlations
 
         if eager_saving
             data = Dict(
                 :K_avg => K_list_accumulated,
                 :n_avg => n_list_accumulated,
+                :n_sq_avg => n_sq_list_accumulated,
                 :avg_currents => currents_list_accumulated,
+                :currents_sq_avg => currents_sq_list_accumulated,
                 :avg_dd_correlations => dd_correlations_accumulated,
                 :t_list => get_t_list(parameters),
                 :params => to_dict(parameters),
@@ -125,7 +131,9 @@ function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_ite
     data = Dict(
         :K_avg => K_list_accumulated,
         :n_avg => n_list_accumulated,
+        :n_sq_avg => n_sq_list_accumulated,
         :avg_currents => currents_list_accumulated,
+        :currents_sq_avg => currents_sq_list_accumulated,
         :avg_dd_correlations => dd_correlations_accumulated,
         :t_list => get_t_list(parameters),
         :params => to_dict(parameters),

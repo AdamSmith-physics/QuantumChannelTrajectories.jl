@@ -25,15 +25,12 @@ single_shot = true  # Whether to perform single shot measurements
 
 bonds = get_bonds(Nx, Ny, site_in, site_out)
 
-K_list_accumulated = zeros(Int, steps, 9)
-n_list_accumulated = zeros(Float64, steps+1, N)
-currents_list_accumulated = zeros(Float64, steps+1, length(bonds))
-density_correlations_accumulated = zeros(Float64, N, N)
-
 
 K_avg = zeros(Int, steps, 9)
 n_avg = zeros(Float64, steps+1, N)
+n_sq_avg = zeros(Float64, steps+1, N)
 avg_currents = zeros(Float64, steps+1, length(bonds))
+currents_sq_avg = zeros(Float64, steps+1, length(bonds))
 avg_dd_correlations = zeros(Float64, N, N)
 completed_trajectories = 0
 t_list = nothing
@@ -68,7 +65,9 @@ for run_idx in 1:num_processes
 
     global K_avg += data[:K_avg]
     global n_avg += data[:n_avg]
+    global n_sq_avg += data[:n_sq_avg]
     global avg_currents += data[:avg_currents]
+    global currents_sq_avg += data[:currents_sq_avg]
     global avg_dd_correlations += data[:avg_dd_correlations]
     global completed_trajectories += data[:completed_trajectories]
 
@@ -82,7 +81,9 @@ end
 final_data = Dict(
         :K_avg => K_avg ./ completed_trajectories,
         :n_avg => n_avg ./ completed_trajectories,
+        :n_sq_avg => n_sq_avg ./ completed_trajectories,
         :avg_currents => avg_currents ./ completed_trajectories,
+        :currents_sq_avg => currents_sq_avg ./ completed_trajectories,
         :avg_dd_correlations => avg_dd_correlations ./ completed_trajectories,
         :t_list => t_list,
         :params => parameters
