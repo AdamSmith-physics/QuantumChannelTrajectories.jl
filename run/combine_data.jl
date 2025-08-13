@@ -1,7 +1,7 @@
 using Printf
 using QuantumChannelTrajectories
 
-#### Copy and paste from the file you ran! ###
+
 dt = 0.25
 p = 0.5
 Nx = 4
@@ -9,18 +9,18 @@ Ny = 4
 N = Nx*Ny
 V = 0.0
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 10
-steps = 50
+num_iterations = 100
+steps = 12
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = true  # Whether to use fermionic statistics
+fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 # Optional parameters
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
-single_shot = true  # Whether to perform single shot measurements
+single_shot = false  # Whether to perform single shot measurements
 ###############################################
 
 bonds = get_bonds(Nx, Ny, site_in, site_out)
