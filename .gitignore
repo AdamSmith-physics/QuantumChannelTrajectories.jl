@@ -1,7 +1,7 @@
 data/
 logs/
 figures/
-
+test/
 # MacOS specific files
 .DS_Store
 

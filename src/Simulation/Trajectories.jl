@@ -2,7 +2,7 @@ export trajectory
 export run_trajectories
 
 
-function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Bool, parameters::SimulationParameters)
+function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::SimulationParameters)
     
     steps = parameters.steps
     Nx = parameters.Nx
@@ -19,7 +19,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     even_parity = parameters.even_parity
     pinned_corners = parameters.pinned_corners
     single_shot = parameters.single_shot
-
+    trotter_evolution = parameters.trotter_evolution
 
     N = Nx * Ny
 
@@ -40,7 +40,14 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
     prog = Progress(steps; dt=0.1, desc="Running trajectory...", showspeed=true)
     for step in 1:steps
 
-        ψ, info = exponentiate(hamiltonian, -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
+        ## Evolve system by full or trotterized hamiltonian
+        if trotter_evolution
+            for layer in 1:4
+                ψ, info = exponentiate(hamiltonian[layer], -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
+            end
+        else
+            ψ, info = exponentiate(hamiltonian, -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
+        end
 
         # Kraus operator for inflow
         K_in = pick_kraus(p, ψ, site_in, N)
@@ -66,7 +73,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
 end
 
 
-function run_trajectories(hamiltonian::SparseMatrixCSC, ψ_init::Vector, num_iterations::Int, fermions::Bool, parameters::SimulationParameters; eager_saving::Bool = false, filename::String = "")
+function run_trajectories(hamiltonian, ψ_init::Vector, num_iterations::Int, fermions::Bool, parameters::SimulationParameters; eager_saving::Bool = false, filename::String = "")
 
     if eager_saving && filename == ""
         error("Filename must be provided for eager saving.")
