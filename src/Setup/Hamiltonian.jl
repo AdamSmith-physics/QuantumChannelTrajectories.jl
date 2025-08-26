@@ -144,7 +144,6 @@ function create_circuit(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0, fe
             row_operator,
             sparse(I, 2^(N - 2*Nx - Nx*(ny-1)), 2^(N - 2*Nx - Nx*(ny-1)))
         )
-        println("I was in 3rd loop")
     end
     
     # creating second layer of vertical operators
@@ -163,9 +162,7 @@ function create_circuit(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0, fe
             sparse(I, 2^(Nx*(ny-1)), 2^(Nx*(ny-1))),
             row_operator,
             sparse(I, 2^(N - 2*Nx - Nx*(ny-1)), 2^(N - 2*Nx - Nx*(ny-1)))
-            )
-            
-        println("I was in 4th loop")
+            )            
     end
             
             row_operator = nothing

@@ -6,7 +6,9 @@ using Revise
 using LinearAlgebra
 using Printf
 
-using QuantumChannelTrajectories
+include("../src/QuantumChannelTrajectories.jl")
+using .QuantumChannelTrajectories
+
 
 BLAS.set_num_threads(1) 
 
