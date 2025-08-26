@@ -1,3 +1,7 @@
+using Pkg
+Pkg.activate("~/julia_projects/QuantumChannelTrajectories.jl/")
+Pkg.instantiate()
+
 using Revise
 using LinearAlgebra
 using Printf
@@ -11,18 +15,36 @@ if length(ARGS) > 0
     run_id = parse(Int, ARGS[1])
 end
 
-# Parameters set at runtime
-dt = parse(Float64, ARGS[2])  # Time step
-p = parse(Float64, ARGS[3])  # Probability of hopping
-Nx = parse(Int, ARGS[4])  # Number of sites in x-direction
-Ny = parse(Int, ARGS[5])  # Number of sites in y-direction
-V = parse(Float64, ARGS[6])  # Interaction strength
-b = parse(Float64, ARGS[7])  # Magnetic field strength
-num_iterations = parse(Int, ARGS[8])  # Number of iterations
-steps = parse(Int, ARGS[9])  # Number of steps in each iteration
-fermions = parse(Bool, ARGS[10])  # Whether to use fermionic statistics
 
-# Change these parameters as needed
+# Parameters set at runtime
+D_list = Any[0.1, 0.25, 0.4]
+# P_list = Any[0.2, 0.5]
+L_list = Any[4]
+V_list = Any[0.0, 2.0]
+B_list = Any[0.0]
+N_list = Any[500]
+T_list = Any[100]
+G_list = Any[false, true]
+
+
+# All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
+All_input_combinations = [(d, l, v, b, n, t, g) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list]
+run_index = (run_id % length(All_input_combinations)) +1
+input_D, input_L, input_V, input_B, input_N, input_T, input_G = All_input_combinations[run_index]
+
+
+dt = input_D  # Time step
+p = 2*dt # Probability of hopping
+Nx = input_L  # Number of sites in x-direction
+Ny = input_L  # Number of sites in y-direction
+V = input_V  # Interaction strength
+b = input_B  # Magnetic field strength
+num_iterations = input_N  # Number of iterations
+steps = input_T  # Number of steps in each iteration
+fermions = input_G  # Whether to use fermionic statistics
+
+
+### ### ### Change these parameters as needed ### ### ###
 N = Nx*Ny
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
@@ -34,6 +56,7 @@ site_out = N  # Site where the current is extracted
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
 single_shot = true
+trotter_evolution = true
 
 
 println("\nRunning with parameters:")
@@ -68,7 +91,8 @@ parameters = SimulationParameters(
     initial_state=initial_state,
     even_parity=even_parity,
     pinned_corners=pinned_corners,
-    single_shot=single_shot
+    single_shot=single_shot,
+    trotter_evolution = trotter_evolution
     )
 
 
@@ -90,13 +114,21 @@ end
 if single_shot
     filename *= "_single_shot"
 end
+if trotter_evolution
+    filename *= "_trotter"
+end
 if run_id !== nothing
     filename *= "_run$(run_id)"
 end
 filename *= ".h5"
 
 
-hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
+if trotter_evolution
+    hamiltonian = create_circuit(Nx, Ny; B=B, V=V, fermions=fermions);
+else
+    hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
+end
+
 GC.gc();
 
 ψ = generate_initial_state(Nx, Ny; initial_state=initial_state);

@@ -1,26 +1,58 @@
+using Pkg
+Pkg.activate("~/julia_projects/QuantumChannelTrajectories.jl/")
+Pkg.instantiate()
+
 using Printf
-using QuantumChannelTrajectories
+include("../src/QuantumChannelTrajectories.jl")
+using .QuantumChannelTrajectories
 
 
-dt = 0.25
-p = 0.5
-Nx = 4
-Ny = 4
+run_id = 1  
+if length(ARGS) > 0
+    run_id = parse(Int, ARGS[1])
+end
+
+
+
+# Parameters set at runtime
+D_list = Any[0.1, 0.25, 0.4]
+# P_list = Any[0.2, 0.5]
+L_list = Any[4]
+V_list = Any[0.0, 2.0]
+B_list = Any[0.0]
+N_list = Any[500]
+T_list = Any[100]
+G_list = Any[false, true]
+
+
+# All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
+All_input_combinations = [(d, l, v, b, n, t, g) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list]
+run_index = (run_id % length(All_input_combinations)) +1
+input_D, input_L, input_V, input_B, input_N, input_T, input_G = All_input_combinations[run_index]
+
+
+dt = input_D  # Time step
+p = 2*dt # Probability of hopping
+Nx = input_L  # Number of sites in x-direction
+Ny = input_L  # Number of sites in y-direction
+V = input_V  # Interaction strength
+b = input_B  # Magnetic field strength
+num_iterations = input_N  # Number of iterations
+steps = input_T  # Number of steps in each iteration
+fermions = input_G  # Whether to use fermionic statistics
+
+
+B = b*pi # Magnetic field in units of flux quantum
 N = Nx*Ny
-V = 0.0
-b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 100
-steps = 12
 site_in = 1  # Site where the current is injected
+site_out = N  # Site where the current is extracted
 drive_type = :current  # :current, :dephasing
 initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
-fermions = false  # Whether to use fermionic statistics
-B = b*pi # Magnetic field in units of flux quantum
-site_out = N  # Site where the current is extracted
 # Optional parameters
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
 single_shot = false  # Whether to perform single shot measurements
+trotter_evolution = true
 ###############################################
 
 bonds = get_bonds(Nx, Ny, site_in, site_out)
@@ -52,9 +84,14 @@ end
 if single_shot
     filename *= "_single_shot"
 end
+if trotter_evolution
+    filename *= "_trotter"
+end
 
-num_processes = 15
-for run_idx in 1:num_processes
+num_processes = 50
+off_set = length(All_input_combinations)
+for run_idx in run_id-1:off_set:off_set*num_processes
+
 
     if !isfile(filename * "_run$(run_idx)" * ".h5")
         println("Skipping run $(run_idx), file does not exist with name: $(filename * "_run$(run_idx)" * ".h5")")
@@ -71,10 +108,10 @@ for run_idx in 1:num_processes
     global avg_dd_correlations += data[:avg_dd_correlations]
     global completed_trajectories += data[:completed_trajectories]
 
-    if run_idx == 1
-        global t_list = data[:t_list]
-        global parameters = data[:params]
-    end
+    # if run_idx == 1
+    global t_list = data[:t_list]
+    global parameters = data[:params]
+    # end
 
 end
 
@@ -106,7 +143,9 @@ end
 if single_shot
     filename *= "_single_shot"
 end
-
+if trotter_evolution
+    filename *= "_trotter"
+end
 save_to_hdf5(final_data, filename * ".h5")
 
 # # delete files after combining
