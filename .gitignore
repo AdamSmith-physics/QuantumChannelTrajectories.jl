@@ -1,8 +1,13 @@
 data/
 logs/
 figures/
+
+# Arash specific files and folders
 test/
 plotting/plotting.ipynb
+run/run_array.sh
+run/run_combine.sh
+
 # MacOS specific files
 .DS_Store
 
