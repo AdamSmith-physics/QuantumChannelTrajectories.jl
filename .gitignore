@@ -2,6 +2,7 @@ data/
 logs/
 figures/
 test/
+plotting/plotting.ipynb
 # MacOS specific files
 .DS_Store
 
