@@ -2,12 +2,12 @@
 
 # defq, shortq, hmemq
 #SBATCH --partition=defq
-#SBATCH --array=1-40
+#SBATCH --array=1-18
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --mem=2g
-#SBATCH --time=08:00:00
-#SBATCH --output=logs/out_%j_%a.out
+#SBATCH --mem=4g
+#SBATCH --time=02:00:00
+#SBATCH --output=logs/out_test_run_%a.out
 
 
 

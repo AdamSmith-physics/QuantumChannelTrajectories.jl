@@ -6,7 +6,9 @@ using Revise
 using LinearAlgebra
 using Printf
 
-using QuantumChannelTrajectories
+include("../src/QuantumChannelTrajectories.jl")
+using .QuantumChannelTrajectories
+
 
 BLAS.set_num_threads(1) 
 
@@ -20,9 +22,9 @@ end
 D_list = Any[0.1, 0.25, 0.4]
 # P_list = Any[0.2, 0.5]
 L_list = Any[4]
-V_list = Any[0.0, 2.0]
+V_list = Any[0.0]
 B_list = Any[0.0]
-N_list = Any[500]
+N_list = Any[100]
 T_list = Any[100]
 G_list = Any[false, true]
 
@@ -67,7 +69,7 @@ single_shot = true
 trotter_evolution = true
 
 
-println("\nRunning with parameters:")
+println("\n Running $run_id with parameters:")
 # print all parameters separated by newline
 println("dt: $dt \n",
         "p: $p \n",
