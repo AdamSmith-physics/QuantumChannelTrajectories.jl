@@ -7,6 +7,8 @@ test/
 plotting/plotting.ipynb
 run/run_array.sh
 run/run_combine.sh
+run/run_trajectories.jl
+run/combine_data.jl
 
 # MacOS specific files
 .DS_Store
