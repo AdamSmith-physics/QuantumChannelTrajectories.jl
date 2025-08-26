@@ -29,7 +29,15 @@ G_list = Any[false, true]
 
 # All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
 All_input_combinations = [(d, l, v, b, n, t, g) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list]
-run_index = (run_id % length(All_input_combinations)) +1
+
+run_index = rem(run_id, length(All_input_combinations))
+nam_index = div(run_id, length(All_input_combinations))+1
+
+if run_index == 0
+    run_index = length(All_input_combinations) 
+    nam_index = div(run_id, length(All_input_combinations))
+end
+
 input_D, input_L, input_V, input_B, input_N, input_T, input_G = All_input_combinations[run_index]
 
 
@@ -66,15 +74,14 @@ println("dt: $dt \n",
         "Nx: $Nx \n",
         "Ny: $Ny \n",
         "V: $V \n",
-        "b: $b \n",
-        "num_iterations: $num_iterations \n",
-        "steps: $steps \n",
+        "b: $b , B: $B \n",
+        "num_of_iterations: $num_iterations \n",
+        "num_of_steps: $steps \n",
         "fermions: $fermions \n",
-        "site_in: $site_in \n",
+        "site_in: $site_in and site_out: $site_out \n",
         "drive_type: $drive_type \n",
         "initial_state: $initial_state \n",
-        "B: $B \n",
-        "site_out: $site_out \n")
+        )
 
 
 parameters = SimulationParameters(
@@ -118,7 +125,7 @@ if trotter_evolution
     filename *= "_trotter"
 end
 if run_id !== nothing
-    filename *= "_run$(run_id)"
+    filename *= "_run$(nam_index)"
 end
 filename *= ".h5"
 
