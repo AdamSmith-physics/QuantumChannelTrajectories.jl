@@ -4,6 +4,7 @@ figures/
 run/
 # Arash specific files and folders
 test/
+run/
 plotting/plotting.ipynb
 run/run_array.sh
 run/run_combine.sh
