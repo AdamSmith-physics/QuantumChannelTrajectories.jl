@@ -1,13 +1,13 @@
 data/
 logs/
 figures/
-
+run/
 # Arash specific files and folders
 test/
 plotting/plotting.ipynb
 run/run_array.sh
-### run/run_trajectories.jl
 run/run_combine.sh
+### run/run_trajectories.jl
 ### run/combine_data.jl
 
 # MacOS specific files

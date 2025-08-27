@@ -19,18 +19,18 @@ end
 
 
 # Parameters set at runtime
-D_list = Any[0.1, 0.25, 0.4]
+D_list = Any[0.25]#[0.1, 0.25, 0.4]
 # P_list = Any[0.2, 0.5]
 L_list = Any[4]
-V_list = Any[0.0]
+V_list = Any[0.0, 2.0]
 B_list = Any[0.0]
-N_list = Any[100]
-T_list = Any[100]
+N_list = Any[500]
+T_list = Any[20]
 G_list = Any[false, true]
-
+C_list = Any["Anna", "Adam"]
 
 # All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
-All_input_combinations = [(d, l, v, b, n, t, g) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list]
+All_input_combinations = [(d, l, v, b, n, t, g, c) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list, c in C_list]
 
 run_index = rem(run_id, length(All_input_combinations))
 nam_index = div(run_id, length(All_input_combinations))+1
@@ -40,7 +40,7 @@ if run_index == 0
     nam_index = div(run_id, length(All_input_combinations))
 end
 
-input_D, input_L, input_V, input_B, input_N, input_T, input_G = All_input_combinations[run_index]
+input_D, input_L, input_V, input_B, input_N, input_T, input_G, input_C = All_input_combinations[run_index]
 
 
 dt = input_D  # Time step
@@ -83,6 +83,7 @@ println("dt: $dt \n",
         "site_in: $site_in and site_out: $site_out \n",
         "drive_type: $drive_type \n",
         "initial_state: $initial_state \n",
+        "circuit_type: $input_C \n",
         )
 
 
@@ -125,6 +126,9 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
+    if input_C !== nothing
+        filename *= "_" * input_C
+    end
 end
 if run_id !== nothing
     filename *= "_run$(nam_index)"
@@ -133,7 +137,11 @@ filename *= ".h5"
 
 
 if trotter_evolution
-    hamiltonian = create_circuit(Nx, Ny; B=B, V=V, fermions=fermions);
+    if input_C == "Anna"
+        hamiltonian = create_circuit_Anna(Nx, Ny; B=B, V=V, fermions=fermions);
+    elseif input_C == "Adam"
+        hamiltonian = create_circuit_Adam(Nx, Ny; B=B, V=V, fermions=fermions);
+    end    
 else
     hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
 end

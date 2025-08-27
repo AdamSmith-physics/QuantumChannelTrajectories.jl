@@ -1,6 +1,6 @@
 
 export create_hamiltonian
-export create_circuit
+# export create_circuit
 export get_bonds
 
 # BLAS.set_num_threads(1) 
@@ -112,25 +112,6 @@ end
 #     local_operator -= kron(Sigma_plus, fill(fill_operator,Nx-1)... ,Sigma_minus) 
 #     local_operator -= kron(Sigma_minus, fill(fill_operator,Nx-1)..., Sigma_plus) 
     
-<<<<<<< HEAD
-    # creating first layer of vertical operators    
-    for ny in 1:2:Ny-1   
-        row_operator = spzeros(Complex{Float64}, 2^(2*Nx), 2^(2*Nx))
-        for nx in 1:Nx
-            row_operator += kron(
-                sparse(I, 2^(nx-1), 2^(nx-1)),
-                local_operator,
-                sparse(I, 2^(Nx-nx), 2^(Nx-nx))
-            )
-        end
-
-        layer_3 += kron(
-            sparse(I, 2^(Nx*(ny-1)), 2^(Nx*(ny-1))),
-            row_operator,
-            sparse(I, 2^(N - 2*Nx - Nx*(ny-1)), 2^(N - 2*Nx - Nx*(ny-1)))
-        )
-    end
-=======
 #     ########### Constructing first layer of vertical operators ###########
 #     for ny in 1:Ny-1   
 #         row_operator = spzeros(Complex{Float64}, 2^(2*Nx), 2^(2*Nx))
@@ -144,7 +125,6 @@ end
 #         layer_3 += kron(
 #             sparse(I, 2^(Nx*(ny-1)), 2^(Nx*(ny-1))), row_operator, sparse(I, 2^(N - 2*Nx - Nx*(ny-1)), 2^(N - 2*Nx - Nx*(ny-1)))
 #         )
->>>>>>> 80480b3a52c601749abae5e8e05674cc18d768a2
     
 #         # end
 #     ########### Constructing second layer of vertical operators ###########
