@@ -58,7 +58,7 @@ function create_circuit_Arsh(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.
     row_operator = nothing
     local_operator = nothing
             
-    return layer_1, layer_2, layer_3, layer_4
+    return layer_1, layer_3, layer_2, layer_4
 end
 
 
