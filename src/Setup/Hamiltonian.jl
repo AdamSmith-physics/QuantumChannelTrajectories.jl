@@ -1,6 +1,6 @@
 
 export create_hamiltonian
-export create_circuit
+# export create_circuit
 export get_bonds
 
 # BLAS.set_num_threads(1) 
