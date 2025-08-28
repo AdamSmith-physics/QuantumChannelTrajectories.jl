@@ -19,14 +19,14 @@ end
 
 
 # Parameters set at runtime
-D_list = Any[0.25]#[0.1, 0.25, 0.4]
+D_list = Any[0.25, 0.45]
 # P_list = Any[0.2, 0.5]
 L_list = Any[4]
 V_list = Any[0.0, 2.0]
 B_list = Any[0.0]
 N_list = Any[500]
 T_list = Any[20]
-G_list = Any[false, true]
+G_list = Any[false]#, true]
 C_list = Any["Anna", "Adam"]
 
 # All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
@@ -126,7 +126,7 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
-    if input_C !== nothing
+    if !fermions
         filename *= "_" * input_C
     end
 end
@@ -137,10 +137,17 @@ filename *= ".h5"
 
 
 if trotter_evolution
-    if input_C == "Anna"
-        hamiltonian = create_circuit_Anna(Nx, Ny; B=B, V=V, fermions=fermions);
-    elseif input_C == "Adam"
-        hamiltonian = create_circuit_Adam(Nx, Ny; B=B, V=V, fermions=fermions);
+    if fermions
+        input_order = Any[
+            [(2,3),(6,7),(5,9),(8,12),(10,11),(14,15)], 
+            [(2,6),(3,7),(10,14),(11,15)], 
+            [(1,2),(3,4),(5,6),(7,8),(9,10),(11,12),(13,14),(15,16)], 
+            [(1,5),(4,8),(6,10),(7,11),(9,13),(12,16)]
+            ]
+        hamiltonian = create_circuit(Nx, Ny, input_order; B=B, V=V, fermions=fermions);
+    elseif !fermions 
+        input_order = circuit_order(Nx, Ny; type=input_C)
+        hamiltonian = create_circuit(Nx, Ny, input_order; B=B, V=V, fermions=fermions);
     end    
 else
     hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
