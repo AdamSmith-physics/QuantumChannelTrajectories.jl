@@ -10,7 +10,7 @@ run/run_array_cluster.sh
 run/combine_data_cluster.jl
 run/run_trajectories_cluster.jl
 plotting/plotting_MacMachine.ipynb
-~/julia_projects/QuantumChannelTrajectories.jl/Project.toml
+~/
 
 # MacOS specific files
 .DS_Store
