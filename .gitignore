@@ -7,6 +7,8 @@ test/
 run/run_combine.sh
 run/run_array.sh
 run/combine_data.jl
+run/combine_data_arash.jl
+run/run_trajectories.jl
 run/run_trajectories_arash.jl
 plotting/plotting.ipynb
 
