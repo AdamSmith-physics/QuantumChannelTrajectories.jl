@@ -1,5 +1,6 @@
 
 export create_hamiltonian
+# export create_circuit
 export get_bonds
 
 # BLAS.set_num_threads(1) 
@@ -73,6 +74,7 @@ function create_hamiltonian(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0
     return hamiltonian
 
 end
+
 
 
 function get_bonds(Nx::Int, Ny::Int, site_in::Int, site_out::Int)::Vector{Tuple{Int,Int}}

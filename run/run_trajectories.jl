@@ -1,8 +1,14 @@
+using Pkg
+Pkg.activate("~/julia_projects/QuantumChannelTrajectories.jl/")
+Pkg.instantiate()
+
 using Revise
 using LinearAlgebra
 using Printf
 
-using QuantumChannelTrajectories
+include("../src/QuantumChannelTrajectories.jl")
+using .QuantumChannelTrajectories
+
 
 BLAS.set_num_threads(1) 
 
@@ -11,18 +17,44 @@ if length(ARGS) > 0
     run_id = parse(Int, ARGS[1])
 end
 
-# Parameters set at runtime
-dt = parse(Float64, ARGS[2])  # Time step
-p = parse(Float64, ARGS[3])  # Probability of hopping
-Nx = parse(Int, ARGS[4])  # Number of sites in x-direction
-Ny = parse(Int, ARGS[5])  # Number of sites in y-direction
-V = parse(Float64, ARGS[6])  # Interaction strength
-b = parse(Float64, ARGS[7])  # Magnetic field strength
-num_iterations = parse(Int, ARGS[8])  # Number of iterations
-steps = parse(Int, ARGS[9])  # Number of steps in each iteration
-fermions = parse(Bool, ARGS[10])  # Whether to use fermionic statistics
 
-# Change these parameters as needed
+# Parameters set at runtime
+D_list = Any[0.25, 0.45]
+# P_list = Any[0.2, 0.5]
+L_list = Any[4]
+V_list = Any[0.0, 2.0]
+B_list = Any[0.0]
+N_list = Any[500]
+T_list = Any[20]
+G_list = Any[false]#, true]
+C_list = Any["Anna", "Adam"]
+
+# All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
+All_input_combinations = [(d, l, v, b, n, t, g, c) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list, c in C_list]
+
+run_index = rem(run_id, length(All_input_combinations))
+nam_index = div(run_id, length(All_input_combinations))+1
+
+if run_index == 0
+    run_index = length(All_input_combinations) 
+    nam_index = div(run_id, length(All_input_combinations))
+end
+
+input_D, input_L, input_V, input_B, input_N, input_T, input_G, input_C = All_input_combinations[run_index]
+
+
+dt = input_D  # Time step
+p = 2*dt # Probability of hopping
+Nx = input_L  # Number of sites in x-direction
+Ny = input_L  # Number of sites in y-direction
+V = input_V  # Interaction strength
+b = input_B  # Magnetic field strength
+num_iterations = input_N  # Number of iterations
+steps = input_T  # Number of steps in each iteration
+fermions = input_G  # Whether to use fermionic statistics
+
+
+### ### ### Change these parameters as needed ### ### ###
 N = Nx*Ny
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
@@ -34,24 +66,25 @@ site_out = N  # Site where the current is extracted
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
 single_shot = true
+trotter_evolution = true
 
 
-println("\nRunning with parameters:")
+println("\n Running $run_id with parameters:")
 # print all parameters separated by newline
 println("dt: $dt \n",
         "p: $p \n",
         "Nx: $Nx \n",
         "Ny: $Ny \n",
         "V: $V \n",
-        "b: $b \n",
-        "num_iterations: $num_iterations \n",
-        "steps: $steps \n",
+        "b: $b , B: $B \n",
+        "num_of_iterations: $num_iterations \n",
+        "num_of_steps: $steps \n",
         "fermions: $fermions \n",
-        "site_in: $site_in \n",
+        "site_in: $site_in and site_out: $site_out \n",
         "drive_type: $drive_type \n",
         "initial_state: $initial_state \n",
-        "B: $B \n",
-        "site_out: $site_out \n")
+        "circuit_type: $input_C \n",
+        )
 
 
 parameters = SimulationParameters(
@@ -68,7 +101,8 @@ parameters = SimulationParameters(
     initial_state=initial_state,
     even_parity=even_parity,
     pinned_corners=pinned_corners,
-    single_shot=single_shot
+    single_shot=single_shot,
+    trotter_evolution = trotter_evolution
     )
 
 
@@ -90,13 +124,35 @@ end
 if single_shot
     filename *= "_single_shot"
 end
+if trotter_evolution
+    filename *= "_trotter"
+    if !fermions
+        filename *= "_" * input_C
+    end
+end
 if run_id !== nothing
-    filename *= "_run$(run_id)"
+    filename *= "_run$(nam_index)"
 end
 filename *= ".h5"
 
 
-hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
+if trotter_evolution
+    if fermions
+        input_order = Any[
+            [(2,3),(6,7),(5,9),(8,12),(10,11),(14,15)], 
+            [(2,6),(3,7),(10,14),(11,15)], 
+            [(1,2),(3,4),(5,6),(7,8),(9,10),(11,12),(13,14),(15,16)], 
+            [(1,5),(4,8),(6,10),(7,11),(9,13),(12,16)]
+            ]
+        hamiltonian = create_circuit(Nx, Ny, input_order; B=B, V=V, fermions=fermions);
+    elseif !fermions 
+        input_order = circuit_order(Nx, Ny; type=input_C)
+        hamiltonian = create_circuit(Nx, Ny, input_order; B=B, V=V, fermions=fermions);
+    end    
+else
+    hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
+end
+
 GC.gc();
 
 ψ = generate_initial_state(Nx, Ny; initial_state=initial_state);
