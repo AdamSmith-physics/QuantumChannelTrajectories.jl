@@ -2,12 +2,12 @@
 
 # defq, shortq, hmemq
 #SBATCH --partition=defq
-#SBATCH --array=1-160
+#SBATCH --array=1-48
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=4g
 #SBATCH --time=02:00:00
-#SBATCH --output=logs/out_test_run_%a.out
+#SBATCH --output=logs/fer_trotter_run_%a.out
 
 
 

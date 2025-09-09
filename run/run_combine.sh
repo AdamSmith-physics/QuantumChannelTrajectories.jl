@@ -1,12 +1,12 @@
 #!/bin/bash
 
 #SBATCH --partition=shortq
+#SBATCH --array=1-12
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --mem=1g
 #SBATCH --time=0:05:00
-
-#SBATCH -o ./logs/output-%j.out # STDOUT
+#SBATCH --output=logs/_fer_combine_trot_%a.out
 
 #below use Linux commands, which will run on compute node. This needs to be specific to your #application
 

@@ -19,15 +19,15 @@ end
 
 
 # Parameters set at runtime
-D_list = Any[0.25, 0.45]
+D_list = Any[0.01]
 # P_list = Any[0.2, 0.5]
 L_list = Any[4]
-V_list = Any[0.0, 2.0]
-B_list = Any[0.0]
-N_list = Any[500]
-T_list = Any[20]
-G_list = Any[false]#, true]
-C_list = Any["Anna", "Adam"]
+V_list = Any[0.0, 1.5]
+B_list = Any[0.0, 0.5]
+N_list = Any[50]
+T_list = Any[700]
+G_list = Any[true]#, true]
+C_list = Any["any"]#["Anna", "Adam"]
 
 # All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
 All_input_combinations = [(d, l, v, b, n, t, g, c) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list, c in C_list]
@@ -65,7 +65,7 @@ site_out = N  # Site where the current is extracted
 # Optional parameters
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
-single_shot = true
+single_shot = false
 trotter_evolution = true
 
 

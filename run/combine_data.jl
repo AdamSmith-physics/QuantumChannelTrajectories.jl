@@ -15,18 +15,18 @@ end
 
 
 # Parameters set at runtime
-D_list = Any[0.1, 0.25, 0.4]
+D_list = Any[0.15, 0.25]
 # P_list = Any[0.2, 0.5]
 L_list = Any[4]
-V_list = Any[0.0, 2.0]
-B_list = Any[0.0]
+V_list = Any[0.0]#, 1.5]
+B_list = Any[0.0]#, 0.5]
 N_list = Any[100]
-T_list = Any[100]
-G_list = Any[false, true]
-
+T_list = Any[34]
+G_list = Any[true]#, true]
+C_list = Any["Anna"]#, "Adam"]
 
 # All_input_combinations = [(d,l,v,b,n,t,g) for d in D_list, for l in L_list, for v in V_list, for b in B_list, for n in N_list, for t in T_list, for g in G_list]
-All_input_combinations = [(d, l, v, b, n, t, g) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list]
+All_input_combinations = [(d, l, v, b, n, t, g, c) for d in D_list, l in L_list, v in V_list, b in B_list, n in N_list, t in T_list, g in G_list, c in C_list]
 
 run_index = rem(run_id, length(All_input_combinations))
 nam_index = div(run_id, length(All_input_combinations))+1
@@ -36,7 +36,7 @@ if run_index == 0
     nam_index = div(run_id, length(All_input_combinations))
 end
 
-input_D, input_L, input_V, input_B, input_N, input_T, input_G = All_input_combinations[run_index]
+input_D, input_L, input_V, input_B, input_N, input_T, input_G, input_C = All_input_combinations[run_index]
 
 
 dt = input_D  # Time step
@@ -96,12 +96,13 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
+    if !fermions
+        filename *= "_" * input_C
+    end
 end
 
-num_processes = 50
-off_set = length(All_input_combinations)
-for run_idx in run_id-1:off_set:off_set*num_processes
-
+num_processes = 4
+for run_idx in 1:num_processes
 
     if !isfile(filename * "_run$(run_idx)" * ".h5")
         println("Skipping run $(run_idx), file does not exist with name: $(filename * "_run$(run_idx)" * ".h5")")
@@ -139,9 +140,9 @@ final_data = Dict(
 
 filename = ""
 if fermions
-    filename = "data/fermions_"
+    filename = "fin_data/fermions_"
 else
-    filename = "data/bosons_"
+    filename = "fin_data/bosons_"
 end
 filename *= "$(Nx)x$(Ny)_dt$(dt)_p$(p)_b$(b)_V$(V)_steps$(steps)_trajectories$(completed_trajectories)_$(string(drive_type))_$(string(initial_state))"
 if even_parity
@@ -155,7 +156,11 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
+    if !fermions
+        filename *= "_" * input_C
+    end
 end
+
 save_to_hdf5(final_data, filename * ".h5")
 
 # # delete files after combining
