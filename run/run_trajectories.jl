@@ -26,14 +26,17 @@ fermions = parse(Bool, ARGS[10])  # Whether to use fermionic statistics
 N = Nx*Ny
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
-initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
+initial_state = :custom  # :checkerboard, :empty, :filled, :random, :custom
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
 
 # Optional parameters
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
-single_shot = true
+single_shot = false
+n_init = Float64[0.93797391, 0.72535065, 0.5664415,  0.38982197, 0.72511378, 0.74254689,
+ 0.64629604, 0.45322563, 0.56448664, 0.64669521, 0.56086757, 0.34403293,
+ 0.38618253, 0.4489219,  0.34381325, 0.05956293]  # Only used if initial_state = :custom
 
 
 println("\nRunning with parameters:")
@@ -68,7 +71,8 @@ parameters = SimulationParameters(
     initial_state=initial_state,
     even_parity=even_parity,
     pinned_corners=pinned_corners,
-    single_shot=single_shot
+    single_shot=single_shot,
+    n_init=n_init
     )
 
 
@@ -99,6 +103,6 @@ filename *= ".h5"
 hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
 GC.gc();
 
-ψ = generate_initial_state(Nx, Ny; initial_state=initial_state);
+ψ = generate_initial_state(Nx, Ny; initial_state=initial_state, n_init=n_init);
 
 run_trajectories(hamiltonian, ψ, num_iterations, fermions, parameters; eager_saving=true, filename=filename)
