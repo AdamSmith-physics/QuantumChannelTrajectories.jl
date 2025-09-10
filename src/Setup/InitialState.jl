@@ -111,7 +111,7 @@ function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corner
 end
 
 
-function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random)
+function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random, initialization::Any=nothing)
     if initial_state == :checkerboard
         return checkerboard_state(Nx, Ny)
     elseif initial_state == :empty
@@ -119,7 +119,7 @@ function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :rando
     elseif initial_state == :filled
         return filled_state(Nx, Ny)
     elseif initial_state == :random
-        return random_state(Nx, Ny)  # optional parameters not needed since they will be overwritten each trajectory
+        return random_state(Nx, Ny; initialization=initialization)  # optional parameters not needed since they will be overwritten each trajectory
     else
         throw(ArgumentError("Unknown initial state: $initial_state"))
     end
