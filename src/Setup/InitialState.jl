@@ -6,6 +6,13 @@ export filled_state
 export random_state
 export generate_initial_state
 
+
+# include("/Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Other/Measurement.jl")
+# using .Measurement.jl
+# using Measurement.jl
+# using .QuantumChannelTrajectories.Measurement
+
+
 """
     product_state(occupation_list::Vector{Int})
 
@@ -17,6 +24,16 @@ Create a product state from a list of occupations.
 # Returns
 A vector representing the product state.
 """
+
+function single_shot(value::Float64, min::Float64, max::Float64)::Float64
+    sample = (max-min)*rand() + min
+    if sample < value
+        return max
+    else
+        return min
+    end
+end
+
 function product_state(occupation_list::Vector{Int}, Nx::Int, Ny::Int)
     
     # Check if the occupation list is the right length
@@ -66,8 +83,14 @@ function filled_state(Nx::Int, Ny::Int)
 end
 
 
-function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corners::Bool = false, site_in::Int = 1, site_out::Int = Nx * Ny)
+function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corners::Bool = false, site_in::Int = 1, site_out::Int = Nx * Ny, initialization::Any=nothing)
+    
     occupation_list = rand(0:1, Nx * Ny)
+    
+    if initialization !== nothing
+        occupation_list = [ Int.(single_shot(n_ini, 0.0, 1.0)) for n_ini in initialization]
+    end
+
 
     if pinned_corners
         occupation_list[site_in] = 1
