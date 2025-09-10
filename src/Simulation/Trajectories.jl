@@ -26,7 +26,7 @@ function trajectory(hamiltonian::SparseMatrixCSC, ψ_init::Vector, fermions::Boo
 
     if initial_state == :random
         ψ = random_state(Nx, Ny; even_parity = even_parity, pinned_corners = pinned_corners, site_in = site_in, site_out = site_out)
-    elseif initial_state == :custom_state
+    elseif initial_state == :custom
         ψ = custom_state(n_init, Nx, Ny)
     else
         ψ = copy(ψ_init)
