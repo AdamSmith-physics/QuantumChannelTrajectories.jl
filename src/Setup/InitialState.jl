@@ -6,13 +6,6 @@ export filled_state
 export random_state
 export generate_initial_state
 
-
-# include("/Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Other/Measurement.jl")
-# using .Measurement.jl
-# using Measurement.jl
-# using .QuantumChannelTrajectories.Measurement
-
-
 """
     product_state(occupation_list::Vector{Int})
 
@@ -25,7 +18,7 @@ Create a product state from a list of occupations.
 A vector representing the product state.
 """
 
-function single_shot(value::Float64, min::Float64, max::Float64)::Float64
+function single_shot(value::Float64, min::Float64, max::Float64)
     sample = (max-min)*rand() + min
     if sample < value
         return max
@@ -83,12 +76,12 @@ function filled_state(Nx::Int, Ny::Int)
 end
 
 
-function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corners::Bool = false, site_in::Int = 1, site_out::Int = Nx * Ny, initialization::Any=nothing)
-    
-    occupation_list = rand(0:1, Nx * Ny)
+function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corners::Bool = false, site_in::Int = 1, site_out::Int = Nx * Ny, initialization::Any=nothing)    
     
     if initialization !== nothing
         occupation_list = [ Int.(single_shot(n_ini, 0.0, 1.0)) for n_ini in initialization]
+    else
+        occupation_list = rand(0:1, Nx * Ny)
     end
 
 

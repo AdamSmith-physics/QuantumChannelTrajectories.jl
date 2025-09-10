@@ -20,11 +20,12 @@ function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::Si
     pinned_corners = parameters.pinned_corners
     single_shot = parameters.single_shot
     trotter_evolution = parameters.trotter_evolution
+    initialization = parameters.initialization
 
     N = Nx * Ny
 
     if initial_state == :random
-        ψ = random_state(Nx, Ny; even_parity = even_parity, pinned_corners = pinned_corners, site_in = site_in, site_out = site_out)
+        ψ = random_state(Nx, Ny; even_parity = even_parity, pinned_corners = pinned_corners, site_in = site_in, site_out = site_out, initialization=initialization)
     else
         ψ = copy(ψ_init)
     end
@@ -37,7 +38,7 @@ function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::Si
     n_list[1, :] = [n_expectation(ψ, n, N; single_shot=single_shot) for n in 1:N]
     currents_list[1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions; single_shot=single_shot) for bond in bonds]
 
-    prog = Progress(steps; dt=0.1, desc="Running trajectory...", showspeed=true)
+    # prog = Progress(steps; dt=0.1, desc="Running trajectory...", showspeed=true)
     for step in 1:steps
 
         ## Evolve system by full or trotterized hamiltonian
@@ -59,13 +60,12 @@ function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::Si
         K_list[step, K_in + 3*K_out + 1] = 1
         n_list[step+1, :] = [n_expectation(ψ, n, N; single_shot=single_shot) for n in 1:N]
         currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions; single_shot=single_shot) for bond in bonds]
-    
         if step == steps[end]
             dd_correlations = density_correlations(ψ, Nx, Ny)
         end
-
-        next!(prog; showvalues = [("Completed timestep", "$step / $steps")])
-
+        
+        # next!(prog; showvalues = [("Completed timestep", "$step / $steps")])
+        
     end
 
     return K_list, n_list, currents_list, dd_correlations
@@ -95,14 +95,14 @@ function run_trajectories(hamiltonian, ψ_init::Vector, num_iterations::Int, fer
 
 
     for run in 1:num_iterations
-
+        
         t_start = time()
-
+        
         println("Running trajectory $run / $num_iterations")
         flush(stdout)
-
+        
         K_list, n_list, currents_list, dd_correlations = trajectory(hamiltonian, ψ_init, fermions, parameters)
-
+        
         K_list_accumulated .+= K_list
         n_list_accumulated .+= n_list
         n_sq_list_accumulated .+= n_list.^2
@@ -111,6 +111,8 @@ function run_trajectories(hamiltonian, ψ_init::Vector, num_iterations::Int, fer
         dd_correlations_accumulated .+= dd_correlations
 
         if eager_saving
+            params_dict = to_dict(parameters)
+            filter!(kv -> kv[2] !== nothing, params_dict)    
             data = Dict(
                 :K_avg => K_list_accumulated,
                 :n_avg => n_list_accumulated,
@@ -119,7 +121,7 @@ function run_trajectories(hamiltonian, ψ_init::Vector, num_iterations::Int, fer
                 :currents_sq_avg => currents_sq_list_accumulated,
                 :avg_dd_correlations => dd_correlations_accumulated,
                 :t_list => get_t_list(parameters),
-                :params => to_dict(parameters),
+                :params => params_dict,         # :params => to_dict(parameters),
                 :completed_trajectories => run
             )
             save_to_hdf5(data, filename)

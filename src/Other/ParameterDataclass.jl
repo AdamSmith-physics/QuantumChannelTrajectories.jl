@@ -19,19 +19,21 @@ struct SimulationParameters
     pinned_corners::Bool  # Optional parameter for pinned corners
     single_shot::Bool  # Optional parameter for single shot measurements
     trotter_evolution::Bool  # Optional parameter for single shot measurements
+    initialization::Any  # Optional parameter for initializing a density pattern
 end
 
 # Constructor with default values
-function SimulationParameters(; steps, Nx, Ny, p, bonds, site_in, site_out, dt, B,
+function SimulationParameters(; steps, Nx, Ny, dt, p, B, bonds, site_in, site_out,
                             drive_type = :current, 
                             initial_state = :random,
                             even_parity = false,
                             pinned_corners = false,
                             single_shot = false,
                             trotter_evolution = false,
+                            initialization = nothing,
                             )
 
-    return SimulationParameters(steps, Nx, Ny, dt, p, B, bonds, site_in, site_out, drive_type, initial_state, even_parity, pinned_corners, single_shot, trotter_evolution)
+    return SimulationParameters(steps, Nx, Ny, dt, p, B, bonds, site_in, site_out, drive_type, initial_state, even_parity, pinned_corners, single_shot, trotter_evolution, initialization)
 end
 
 
@@ -51,8 +53,9 @@ function to_dict(params::SimulationParameters)
         :even_parity => params.even_parity,
         :pinned_corners => params.pinned_corners,
         :single_shot => params.single_shot,
-        :trotter_evolution => params.trotter_evolution
-    )
+        :trotter_evolution => params.trotter_evolution,
+        :initialization => params.initialization
+        )
 end
 
 
@@ -72,7 +75,8 @@ function from_dict(dict::Dict)
         even_parity = dict[:even_parity],
         pinned_corners = dict[:pinned_corners],
         single_shot = dict[:single_shot],
-        trotter_evolution = dict[:trotter_evolution]
+        trotter_evolution = dict[:trotter_evolution],
+        initialization = dict[:initialization]
     )
 end
 

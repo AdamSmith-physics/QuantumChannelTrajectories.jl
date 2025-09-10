@@ -1,0 +1,366 @@
+yess
+
+ Running 1 with parameters:
+dt: 0.25 , p: 0.5 
+Nx: 4, Ny: 4 
+V: 4.0 
+b: 0.0 , B: 0.0 
+num_of_iterations: 500 
+num_of_steps: 20 
+fermions: false 
+site_in: 1 and site_out: 16 
+drive_type: current 
+initial_state: random 
+circuit_order: Adam 
+trotter evolution: true 
+single_shot measurement: false 
+
+Running trajectory 1 / 500
+Precompiling QuantumChannelTrajectories...
+   1527.9 ms  ✓ QuantumChannelTrajectories
+  1 dependency successfully precompiled in 2 seconds. 94 already precompiled.
+Running trajectory...  10%|█▋              |  ETA: 0:00:25 ( 1.40  s/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  45%|███████▎        |  ETA: 0:00:04 ( 0.41  s/it)[K
+   Completed timestep: 9 / 20[K[A
+[K[ARunning trajectory...  55%|████████▊       |  ETA: 0:00:03 ( 0.35  s/it)[K
+   Completed timestep: 11 / 20[K[A
+[K[ARunning trajectory...  65%|██████████▍     |  ETA: 0:00:02 ( 0.31  s/it)[K
+   Completed timestep: 13 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:01 ( 0.28  s/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  80%|████████████▊   |  ETA: 0:00:01 ( 0.27  s/it)[K
+   Completed timestep: 16 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:01 ( 0.25  s/it)[K
+   Completed timestep: 18 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:04 ( 0.25  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 1 / 500
+Elapsed time for trajectory 1: 6.301378011703491 seconds
+Estimated remaining time: 00:52:24
+
+Running trajectory 2 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:02 (91.43 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (91.05 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (85.95 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (83.55 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (81.89 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:00 (81.77 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  80%|████████████▊   |  ETA: 0:00:00 (84.06 ms/it)[K
+   Completed timestep: 16 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:00 (82.41 ms/it)[K
+   Completed timestep: 18 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:01 (89.86 ms/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 2 / 500
+Elapsed time for trajectory 2: 1.8670330047607422 seconds
+Estimated remaining time: 00:15:30
+
+Running trajectory 3 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (81.78 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:01 (84.74 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (95.90 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (94.03 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (92.88 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (91.97 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 (91.03 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (95.67 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (95.74 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (95.13 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 3 / 500
+Elapsed time for trajectory 3: 2.13254714012146 seconds
+Estimated remaining time: 00:17:40
+
+Running trajectory 4 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (76.81 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  15%|██▍             |  ETA: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 3 / 20[K[A
+[K[ARunning trajectory...  25%|████            |  ETA: 0:00:01 (97.83 ms/it)[K
+   Completed timestep: 5 / 20[K[A
+[K[ARunning trajectory...  35%|█████▋          |  ETA: 0:00:01 (95.97 ms/it)[K
+   Completed timestep: 7 / 20[K[A
+[K[ARunning trajectory...  45%|███████▎        |  ETA: 0:00:01 (94.11 ms/it)[K
+   Completed timestep: 9 / 20[K[A
+[K[ARunning trajectory...  55%|████████▊       |  ETA: 0:00:01 (92.41 ms/it)[K
+   Completed timestep: 11 / 20[K[A
+[K[ARunning trajectory...  65%|██████████▍     |  ETA: 0:00:01 (95.61 ms/it)[K
+   Completed timestep: 13 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (94.66 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (93.73 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (92.82 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 4 / 500
+Elapsed time for trajectory 4: 2.0783751010894775 seconds
+Estimated remaining time: 00:17:11
+
+Running trajectory 5 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:02 ( 0.12  s/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:02 ( 0.11  s/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 ( 0.10  s/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (96.58 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (93.84 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (96.79 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 (95.07 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  80%|████████████▊   |  ETA: 0:00:00 (93.46 ms/it)[K
+   Completed timestep: 16 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:00 (91.93 ms/it)[K
+   Completed timestep: 18 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:01 (98.37 ms/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 5 / 500
+Elapsed time for trajectory 5: 1.9985179901123047 seconds
+Estimated remaining time: 00:16:29
+
+Running trajectory 6 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:02 ( 0.12  s/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:02 ( 0.11  s/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 ( 0.10  s/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (98.81 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (96.93 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  55%|████████▊       |  ETA: 0:00:01 ( 0.10  s/it)[K
+   Completed timestep: 11 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 ( 0.10  s/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 ( 0.10  s/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  80%|████████████▊   |  ETA: 0:00:00 ( 0.10  s/it)[K
+   Completed timestep: 16 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:00 ( 0.10  s/it)[K
+   Completed timestep: 18 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 ( 0.10  s/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.11  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 6 / 500
+Elapsed time for trajectory 6: 2.3137121200561523 seconds
+Estimated remaining time: 00:19:03
+
+Running trajectory 7 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (74.05 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:01 (80.64 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (80.70 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  35%|█████▋          |  ETA: 0:00:01 (91.08 ms/it)[K
+   Completed timestep: 7 / 20[K[A
+[K[ARunning trajectory...  45%|███████▎        |  ETA: 0:00:01 (90.64 ms/it)[K
+   Completed timestep: 9 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (92.66 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (93.01 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 (92.76 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (97.55 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (97.36 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:00 (97.63 ms/it)[K
+   Completed timestep: 18 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.11  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 7 / 500
+Elapsed time for trajectory 7: 2.1971890926361084 seconds
+Estimated remaining time: 00:18:03
+
+Running trajectory 8 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (77.36 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:02 (99.34 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (96.20 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (93.08 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (90.29 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (88.05 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  65%|██████████▍     |  ETA: 0:00:01 (92.79 ms/it)[K
+   Completed timestep: 13 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (92.44 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (92.14 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (91.80 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 8 / 500
+Elapsed time for trajectory 8: 2.04964280128479 seconds
+Estimated remaining time: 00:16:48
+
+Running trajectory 9 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (65.68 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  15%|██▍             |  ETA: 0:00:02 (91.22 ms/it)[K
+   Completed timestep: 3 / 20[K[A
+[K[ARunning trajectory...  25%|████            |  ETA: 0:00:01 (84.68 ms/it)[K
+   Completed timestep: 5 / 20[K[A
+[K[ARunning trajectory...  35%|█████▋          |  ETA: 0:00:01 (81.82 ms/it)[K
+   Completed timestep: 7 / 20[K[A
+[K[ARunning trajectory...  45%|███████▎        |  ETA: 0:00:01 (79.28 ms/it)[K
+   Completed timestep: 9 / 20[K[A
+[K[ARunning trajectory...  55%|████████▊       |  ETA: 0:00:01 (77.54 ms/it)[K
+   Completed timestep: 11 / 20[K[A
+[K[ARunning trajectory...  65%|██████████▍     |  ETA: 0:00:01 (76.01 ms/it)[K
+   Completed timestep: 13 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (80.10 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (80.01 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (79.43 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:01 (89.03 ms/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 9 / 500
+Elapsed time for trajectory 9: 1.8139748573303223 seconds
+Estimated remaining time: 00:14:51
+
+Running trajectory 10 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (79.88 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:01 (84.15 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (96.12 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (94.98 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (94.24 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (93.33 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 (91.35 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (95.08 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (93.99 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (92.46 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 10 / 500
+Elapsed time for trajectory 10: 2.0748178958892822 seconds
+Estimated remaining time: 00:16:57
+
+Running trajectory 11 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (78.15 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:01 (81.07 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  25%|████            |  ETA: 0:00:01 (98.84 ms/it)[K
+   Completed timestep: 5 / 20[K[A
+[K[ARunning trajectory...  35%|█████▋          |  ETA: 0:00:01 (96.18 ms/it)[K
+   Completed timestep: 7 / 20[K[A
+[K[ARunning trajectory...  45%|███████▎        |  ETA: 0:00:01 (95.11 ms/it)[K
+   Completed timestep: 9 / 20[K[A
+[K[ARunning trajectory...  55%|████████▊       |  ETA: 0:00:01 (93.89 ms/it)[K
+   Completed timestep: 11 / 20[K[A
+[K[ARunning trajectory...  65%|██████████▍     |  ETA: 0:00:01 (97.44 ms/it)[K
+   Completed timestep: 13 / 20[K[A
+[K[ARunning trajectory...  75%|████████████    |  ETA: 0:00:00 (96.04 ms/it)[K
+   Completed timestep: 15 / 20[K[A
+[K[ARunning trajectory...  85%|█████████████▋  |  ETA: 0:00:00 (94.76 ms/it)[K
+   Completed timestep: 17 / 20[K[A
+[K[ARunning trajectory...  95%|███████████████▎|  ETA: 0:00:00 (93.35 ms/it)[K
+   Completed timestep: 19 / 20[K[A
+[K[ARunning trajectory... 100%|████████████████| Time: 0:00:02 ( 0.10  s/it)[K
+   Completed timestep: 20 / 20[K
+Completed trajectory 11 / 500
+Elapsed time for trajectory 11: 2.0723469257354736 seconds
+Estimated remaining time: 00:16:53
+
+Running trajectory 12 / 500
+Running trajectory...  10%|█▋              |  ETA: 0:00:01 (69.31 ms/it)[K
+   Completed timestep: 2 / 20[K[A
+[K[ARunning trajectory...  20%|███▎            |  ETA: 0:00:01 (92.28 ms/it)[K
+   Completed timestep: 4 / 20[K[A
+[K[ARunning trajectory...  30%|████▊           |  ETA: 0:00:01 (91.79 ms/it)[K
+   Completed timestep: 6 / 20[K[A
+[K[ARunning trajectory...  40%|██████▍         |  ETA: 0:00:01 (92.30 ms/it)[K
+   Completed timestep: 8 / 20[K[A
+[K[ARunning trajectory...  50%|████████        |  ETA: 0:00:01 (92.65 ms/it)[K
+   Completed timestep: 10 / 20[K[A
+[K[ARunning trajectory...  60%|█████████▋      |  ETA: 0:00:01 (91.62 ms/it)[K
+   Completed timestep: 12 / 20[K[A
+[K[ARunning trajectory...  70%|███████████▎    |  ETA: 0:00:01 (94.91 ms/it)[K
+   Completed timestep: 14 / 20[K[A
+[K[ARunning trajectory...  80%|████████████▊   |  ETA: 0:00:00 (94.16 ms/it)[K
+   Completed timestep: 16 / 20[K[A
+[K[ARunning trajectory...  90%|██████████████▍ |  ETA: 0:00:00 (93.76 ms/it)[K
+   Completed timestep: 18 / 20[K[A
+[3410] signal 2: Interrupt: 2
+in expression starting at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/test/run_test.jl:174
+setindex! at ./array.jl:987 [inlined]
+fill! at ./array.jl:329 [inlined]
+_rmul_or_fill! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/generic.jl:103 [inlined]
+_At_or_Ac_mul_B! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/SparseArrays/src/linalg.jl:106
+spdensemul! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/SparseArrays/src/linalg.jl:61 [inlined]
+generic_matvecmul! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/SparseArrays/src/linalg.jl:54 [inlined]
+_mul! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:73 [inlined]
+mul! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:70 [inlined]
+mul! at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:253 [inlined]
+* at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:60 [inlined]
+* at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:95 [inlined]
+* at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/usr/share/julia/stdlib/v1.11/LinearAlgebra/src/matmul.jl:1118
+unknown function (ip: 0x1228e427f)
+#n_expectation#41 at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Other/Measurement.jl:10
+n_expectation at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Other/Measurement.jl:7 [inlined]
+#34 at ./none:0
+iterate at ./generator.jl:48 [inlined]
+collect_to! at ./array.jl:849
+collect_to_with_first! at ./array.jl:827
+unknown function (ip: 0x14c05c083)
+collect at ./array.jl:801
+trajectory at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Simulation/Trajectories.jl:60
+#run_trajectories#40 at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Simulation/Trajectories.jl:104
+run_trajectories at /Users/arash/Julia Projects/Quantum_Trajectory_Adam/QuantumChannelTrajectories.jl/src/Simulation/Trajectories.jl:76
+unknown function (ip: 0x1228a4087)
+jl_apply at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/./julia.h:2157 [inlined]
+do_call at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/interpreter.c:126
+eval_stmt_value at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/interpreter.c:174
+eval_body at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/interpreter.c:666
+jl_interpret_toplevel_thunk at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/interpreter.c:824
+jl_toplevel_eval_flex at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/toplevel.c:943
+jl_toplevel_eval_flex at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/toplevel.c:886
+ijl_toplevel_eval at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/toplevel.c:952 [inlined]
+ijl_toplevel_eval_in at /Users/julia/.julia/scratchspaces/a66863c6-20e8-4ff4-8a62-49f30b1f605e/agent-cache/default-honeycrisp-R17H3W25T9.0/build/default-honeycrisp-R17H3W25T9-0/julialang/julia-release-1-dot-11/src/toplevel.c:994
