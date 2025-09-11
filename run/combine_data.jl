@@ -30,7 +30,6 @@ All_input_combinations = [(d, l, v, b, n, t, g, c) for d in D_list, l in L_list,
 
 run_index = rem(run_id, length(All_input_combinations))
 nam_index = div(run_id, length(All_input_combinations))+1
-
 if run_index == 0
     run_index = length(All_input_combinations)
     nam_index = div(run_id, length(All_input_combinations))
