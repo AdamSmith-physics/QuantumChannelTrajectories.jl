@@ -66,7 +66,7 @@ function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::Si
         n_list[step+1, :] = [n_expectation(ψ, n, N; single_shot=single_shot) for n in 1:N]
         currents_list[step+1, :] = [current_expectation(ψ, B, bond, Nx, Ny, fermions; single_shot=single_shot) for bond in bonds]
         
-        pure_dist = sqrt(1.0-abs(ϕ' * ψ)^2)/1.0
+        pure_dist = sqrt(abs(1.0-abs(ϕ' * ψ)^2))/1.0
         speed_list[step+1] = pure_dist        
         # energy = ψ' * hamiltonian * ψ
         # enegry_2 = ψ' * hamiltonian * hamiltonian * ψ
