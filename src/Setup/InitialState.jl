@@ -88,7 +88,18 @@ function random_state(Nx::Int, Ny::Int; even_parity::Bool = false, pinned_corner
 end
 
 
-function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random)
+function custom_state(n_init::Vector{Float64}, Nx::Int, Ny::Int)
+    if length(n_init) != Nx * Ny
+        throw(ArgumentError("n_init must have length Nx * Ny"))
+    end
+
+    occupation_list = [rand() < n ? 1 : 0 for n in n_init]
+
+    return product_state(occupation_list, Nx, Ny)
+end
+
+
+function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :random, n_init::Vector{Float64} = Float64[])
     if initial_state == :checkerboard
         return checkerboard_state(Nx, Ny)
     elseif initial_state == :empty
@@ -97,6 +108,8 @@ function generate_initial_state(Nx::Int, Ny::Int; initial_state::Symbol = :rando
         return filled_state(Nx, Ny)
     elseif initial_state == :random
         return random_state(Nx, Ny)  # optional parameters not needed since they will be overwritten each trajectory
+    elseif initial_state == :custom
+        return custom_state(n_init, Nx, Ny)
     else
         throw(ArgumentError("Unknown initial state: $initial_state"))
     end
