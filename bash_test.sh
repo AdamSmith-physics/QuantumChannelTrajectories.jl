@@ -5,14 +5,14 @@ if [ ! -d "logs" ]; then
     mkdir logs
 fi
 
-dt=0.1
-p=0.2
+dt=0.25
+p=0.5
 Nx=4
 Ny=4
-V=2.0
+V=3.0
 b=0.0
 num_iterations=100
-steps=100
+steps=200
 fermions=false 
 
 max=15

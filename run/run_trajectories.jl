@@ -34,7 +34,8 @@ site_out = N  # Site where the current is extracted
 even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
 single_shot = false
-trotter_evolution = true  # Whether to use Trotter evolution
+trotter_evolution = false  # Whether to use Trotter evolution
+interaction_type = :ZZ  # :density or :ZZ
 # n_init = Float64[0.93797391, 0.72535065, 0.5664415,  0.38982197, 0.72511378, 0.74254689,
 #  0.64629604, 0.45322563, 0.56448664, 0.64669521, 0.56086757, 0.34403293,
 #  0.38618253, 0.4489219,  0.34381325, 0.05956293]  # Only used if initial_state = :custom
@@ -73,7 +74,8 @@ println("dt: $dt \n",
         "initial_state: $initial_state \n",
         "B: $B \n",
         "site_out: $site_out \n",
-        "trotter_evolution: $trotter_evolution \n")
+        "trotter_evolution: $trotter_evolution \n",
+        "interaction_type: $interaction_type \n")
 
 
 parameters = SimulationParameters(
@@ -117,6 +119,9 @@ end
 if trotter_evolution
     filename *= "_trotter"
 end
+if interaction_type == :ZZ
+    filename *= "_ZZ"
+end
 if run_id !== nothing
     filename *= "_run$(run_id)"
 end
@@ -126,10 +131,10 @@ filename *= ".h5"
 hamiltonian = nothing
 if trotter_evolution
     println("Using Trotter evolution.")
-    hamiltonian = create_circuit(Nx, Ny, order; B=B, V=V, fermions=fermions);
+    hamiltonian = create_circuit(Nx, Ny, order; B=B, V=V, fermions=fermions, interaction_type=interaction_type);
 else
     println("Using full Hamiltonian evolution.")
-    hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions);
+    hamiltonian = create_hamiltonian(Nx, Ny; B=B, V=V, fermions=fermions, interaction_type=interaction_type);
 end
 
 GC.gc();

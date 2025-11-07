@@ -9,16 +9,25 @@ export get_bonds
 
     Creates a Hamiltonian for a 2D system with dimensions Nx and Ny.
 """
-function create_hamiltonian(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0, fermions::Bool = false)
+function create_hamiltonian(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0, fermions::Bool = false, interaction_type::Symbol = :density)
+
+    # Check interaction type is valid, options are :density or :ZZ
+    if !(interaction_type in [:density, :ZZ])
+        error("Invalid interaction type: $interaction_type. Valid options are :density or :ZZ.")
+    end
 
     N::Int = Nx * Ny
 
     hamiltonian = spzeros(Complex{Float64}, 2^N, 2^N)
-
     
     row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
     for ny in 1:Ny
-        local_operator = -exp(im*B*ny)*kron(Sigma_plus,Sigma_minus) - exp(-im*B*ny)*kron(Sigma_minus,Sigma_plus) + V*kron(density_operator,density_operator)
+        local_operator = -exp(im*B*ny)*kron(Sigma_plus,Sigma_minus) - exp(-im*B*ny)*kron(Sigma_minus,Sigma_plus) 
+        if interaction_type == :density
+            local_operator += V*kron(density_operator,density_operator)
+        elseif interaction_type == :ZZ
+            local_operator += V/4*kron(PauliZ,PauliZ)  # V/4 because Sigma_z = 2n - I
+        end
 
         # Construct horizontal operators first
         row_operator = spzeros(Complex{Float64}, 2^Nx, 2^Nx)
@@ -45,7 +54,12 @@ function create_hamiltonian(Nx::Int, Ny::Int; B::Float64 = 0.0, V::Float64 = 0.0
     fill_operator = fermions ? PauliZ : sparse(I, 2, 2)
     local_operator = -kron(Sigma_plus, fill(fill_operator,Nx-1)... ,Sigma_minus) 
     local_operator -= kron(Sigma_minus, fill(fill_operator,Nx-1)..., Sigma_plus) 
-    local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
+    if interaction_type == :density
+        local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
+    elseif interaction_type == :ZZ
+        local_operator += V*kron(PauliZ, sparse(I,2^(Nx-1),2^(Nx-1)), PauliZ)  # V/4 because Sigma_z = 2n - I
+    end
+    
 
     for ny in 1:Ny-1
         # Construct vertical operators

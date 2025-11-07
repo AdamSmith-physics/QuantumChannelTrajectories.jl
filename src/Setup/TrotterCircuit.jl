@@ -52,8 +52,13 @@ end
     - `V::Float64`: Interaction strength (default is 0.0).
     - `fermions::Bool`: Whether to use fermionic statistics (default is false).
 """
-function create_circuit(Nx::Int, Ny::Int, order; B::Float64 = 0.0, V::Float64 = 0.0, fermions::Bool = false)
+function create_circuit(Nx::Int, Ny::Int, order; B::Float64 = 0.0, V::Float64 = 0.0, fermions::Bool = false, interaction_type::Symbol = :density)
     
+    # Check interaction type is valid, options are :density or :ZZ
+    if !(interaction_type in [:density, :ZZ])
+        error("Invalid interaction type: $interaction_type. Valid options are :density or :ZZ.")
+    end
+
     trotter_valid, message = _check_trotter_order(Nx, Ny, order)
     if !trotter_valid
         error("Invalid Trotter order: $message")
@@ -75,7 +80,12 @@ function create_circuit(Nx::Int, Ny::Int, order; B::Float64 = 0.0, V::Float64 = 
             
             if abs(x1-x2)==1
 
-                local_operator = -exp(im*B*ny)*kron(Sigma_plus,Sigma_minus) - exp(-im*B*ny)*kron(Sigma_minus,Sigma_plus) + V*kron(density_operator,density_operator)
+                local_operator = -exp(im*B*ny)*kron(Sigma_plus,Sigma_minus) - exp(-im*B*ny)*kron(Sigma_minus,Sigma_plus)
+                if interaction_type == :density
+                    local_operator += V*kron(density_operator,density_operator)
+                elseif interaction_type == :ZZ
+                    local_operator += V/4*kron(PauliZ,PauliZ)  # V/4 because Sigma_z = 2n - I
+                end
 
                 row_operator = kron( 
                     sparse(I, 2^(nx-1), 2^(nx-1)), 
@@ -91,9 +101,13 @@ function create_circuit(Nx::Int, Ny::Int, order; B::Float64 = 0.0, V::Float64 = 
             
             elseif  abs(x1-x2)==Nx
 
-                local_operator = V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)  # build JW
-                local_operator -= kron(Sigma_plus, fill(fill_operator,Nx-1)... ,Sigma_minus) 
+                local_operator = -kron(Sigma_plus, fill(fill_operator,Nx-1)... ,Sigma_minus) 
                 local_operator -= kron(Sigma_minus, fill(fill_operator,Nx-1)..., Sigma_plus) 
+                if interaction_type == :density
+                    local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
+                elseif interaction_type == :ZZ
+                    local_operator += V*kron(PauliZ, sparse(I,2^(Nx-1),2^(Nx-1)), PauliZ)  # V/4 because Sigma_z = 2n - I
+                end
 
                 row_operator = kron( 
                     sparse(I, 2^(nx-1), 2^(nx-1)), 
