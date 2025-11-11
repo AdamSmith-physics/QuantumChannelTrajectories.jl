@@ -7,13 +7,13 @@ p = 0.5
 Nx = 4
 Ny = 4
 N = Nx*Ny
-V = 4.0
+V = 0.5
 b = 0.0 #2/((Nx-1)*(Ny-1))  # Magnetic field strength
-num_iterations = 100
-steps = 100
+num_iterations = 200
+steps = 200
 site_in = 1  # Site where the current is injected
 drive_type = :current  # :current, :dephasing
-initial_state = :custom  # :checkerboard, :empty, :filled, :random, :custom
+initial_state = :random  # :checkerboard, :empty, :filled, :random, :custom
 fermions = false  # Whether to use fermionic statistics
 B = b*pi # Magnetic field in units of flux quantum
 site_out = N  # Site where the current is extracted
@@ -22,6 +22,7 @@ even_parity = false  # Whether to enforce even parity
 pinned_corners = true  # Whether to pin the corners
 single_shot = false  # Whether to perform single shot measurements
 trotter_evolution = false  # Whether to use Trotter evolution
+interaction_type = :ZZ  # :density or :ZZ
 ###############################################
 
 bonds = get_bonds(Nx, Ny, site_in, site_out)
@@ -55,6 +56,9 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
+end
+if interaction_type == :ZZ
+    filename *= "_ZZ"
 end
 
 num_processes = 15
@@ -110,6 +114,9 @@ if single_shot
 end
 if trotter_evolution
     filename *= "_trotter"
+end
+if interaction_type == :ZZ
+    filename *= "_ZZ"
 end
 
 save_to_hdf5(final_data, filename * ".h5")

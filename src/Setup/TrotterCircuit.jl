@@ -106,7 +106,7 @@ function create_circuit(Nx::Int, Ny::Int, order; B::Float64 = 0.0, V::Float64 = 
                 if interaction_type == :density
                     local_operator += V*kron(density_operator, sparse(I,2^(Nx-1),2^(Nx-1)), density_operator)
                 elseif interaction_type == :ZZ
-                    local_operator += V*kron(PauliZ, sparse(I,2^(Nx-1),2^(Nx-1)), PauliZ)  # V/4 because Sigma_z = 2n - I
+                    local_operator += V/4*kron(PauliZ, sparse(I,2^(Nx-1),2^(Nx-1)), PauliZ)  # V/4 because Sigma_z = 2n - I
                 end
 
                 row_operator = kron( 
