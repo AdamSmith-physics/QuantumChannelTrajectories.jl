@@ -65,7 +65,7 @@ function trajectory(hamiltonian, ψ_init::Vector, fermions::Bool, parameters::Si
 
         if trotter_evolution
             for layer_hamiltonian in hamiltonian
-                ψ, info = exponentiate(layer_hamiltonian, -im*dt/length(hamiltonian), ψ; tol=1e-14, ishermitian=true, eager=true) 
+                ψ, info = exponentiate(layer_hamiltonian, -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
             end
         else
             ψ, info = exponentiate(hamiltonian, -im*dt, ψ; tol=1e-14, ishermitian=true, eager=true) 
